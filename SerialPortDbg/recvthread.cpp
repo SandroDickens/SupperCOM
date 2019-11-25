@@ -26,7 +26,7 @@ RecvThread::~RecvThread()
 void RecvThread::run()
 {
     while(true) {
-        if(serialPort->waitForReadyRead()) {
+        if(serialPort->waitForReadyRead(1000)) {
             QByteArray recvArray = serialPort->readAll();
             emit newData(recvArray);
         }
