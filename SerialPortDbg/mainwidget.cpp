@@ -135,7 +135,7 @@ void MainWidget::openSerialPort(void)
         }
         disconnect(recvThread, &RecvThread::newData,this, &MainWidget::recvData);
 		recvThread->stop();
-		recvThread->terminate();
+		//recvThread->terminate();
 		recvThread->wait();
         delete recvThread;
         recvThread = nullptr;
