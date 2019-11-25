@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>784</width>
-    <height>613</height>
+    <width>789</width>
+    <height>639</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,30 +28,30 @@
   <property name="windowTitle">
    <string>SerialPortDebugger</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>15</y>
+     <x>13</x>
+     <y>17</y>
      <width>761</width>
-     <height>584</height>
+     <height>609</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <widget class="QTextEdit" name="recvTextEdit">
+       <widget class="QTextBrowser" name="recvTextBrowser">
         <property name="minimumSize">
          <size>
           <width>550</width>
-          <height>350</height>
+          <height>400</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>550</width>
-          <height>350</height>
+          <height>400</height>
          </size>
         </property>
        </widget>
@@ -64,7 +64,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>13</height>
+          <height>3</height>
          </size>
         </property>
        </spacer>
@@ -93,7 +93,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>13</height>
+          <height>3</height>
          </size>
         </property>
        </spacer>
@@ -103,19 +103,19 @@
         <property name="minimumSize">
          <size>
           <width>550</width>
-          <height>30</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>550</width>
-          <height>30</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
          <font>
           <family>DejaVu Sans Mono</family>
-          <pointsize>11</pointsize>
+          <pointsize>9</pointsize>
          </font>
         </property>
        </widget>
@@ -123,7 +123,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
@@ -345,138 +345,169 @@
        </spacer>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="1" column="0">
-           <widget class="QPushButton" name="sendBtn">
-            <property name="text">
-             <string>发送</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="stopSendBtn">
-            <property name="text">
-             <string>停止发送</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="cleanSendArea">
-            <property name="text">
-             <string>清空发送</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="cleanDisplayArea">
-            <property name="text">
-             <string>清空接收</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QCheckBox" name="hexSend">
-              <property name="font">
-               <font>
-                <family>DejaVu Sans Mono</family>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>16进制发送</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="sendInterval">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>90</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>90</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>DejaVu Sans Mono</family>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QCheckBox" name="sendNewLine">
-              <property name="font">
-               <font>
-                <family>DejaVu Sans Mono</family>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>发送新行</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="schedSend">
-              <property name="font">
-               <font>
-                <family>DejaVu Sans Mono</family>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>定时发送</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="0">
+         <widget class="QPushButton" name="sendBtn">
+          <property name="text">
+           <string>发送</string>
           </property>
-          <property name="sizeHint" stdset="0">
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="stopSendBtn">
+          <property name="text">
+           <string>停止发送</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="cleanSendArea">
+          <property name="text">
+           <string>清空发送</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="cleanDisplayArea">
+          <property name="text">
+           <string>清空接收</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QCheckBox" name="hexSend">
+            <property name="font">
+             <font>
+              <family>DejaVu Sans Mono</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>16进制发送</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="sendInterval">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>90</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>DejaVu Sans Mono</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="sendNewLine">
+            <property name="font">
+             <font>
+              <family>DejaVu Sans Mono</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送新行</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="schedSend">
+            <property name="font">
+             <font>
+              <family>DejaVu Sans Mono</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>定时发送</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>28</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QToolButton" name="openFileBtn">
+          <property name="minimumSize">
            <size>
-            <width>20</width>
-            <height>28</height>
+            <width>80</width>
+            <height>25</height>
            </size>
           </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QToolButton" name="sendFileBtn">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="font">
            <font>
             <family>DejaVu Sans Mono</family>
             <pointsize>11</pointsize>
            </font>
+          </property>
+          <property name="text">
+           <string>打开文件</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="sendFileBtn">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
           </property>
           <property name="text">
            <string>发送文件</string>

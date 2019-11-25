@@ -23,7 +23,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 HEADERS += mainwidget.h \
-    recvthread.h
+    recvthread.h \
+    sendthread.h
 FORMS += mainwidget.ui
 SOURCES += main.cpp mainwidget.cpp \
-    recvthread.cpp
+    recvthread.cpp \
+    sendthread.cpp

@@ -1,13 +1,17 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
 #include "recvthread.h"
+#include "sendthread.h"
 #include <QFontDialog>
 #include <QColorDialog>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QSerialPort>
 #include <QMessageBox>
 #include <QtDebug>
-#include <QRegExp>
+#include <QFileDialog>
+
+
+constexpr auto NUM_CHAR_LINE = 61;
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -25,6 +29,7 @@ MainWidget::MainWidget(QWidget *parent)
     ui->setupUi(this);
     serialPort = nullptr;
     recvThread = nullptr;
+    sendThread = nullptr;
     /* list serialport */
     QList<QSerialPortInfo> m_serialPortList = QSerialPortInfo::availablePorts();
     QStringList portNameList;
@@ -59,13 +64,11 @@ MainWidget::MainWidget(QWidget *parent)
     ui->checkBitSel->addItem(QString(tr("Even")));
     ui->checkBitSel->setCurrentIndex(0);
 
-    ui->recvTextEdit->setStyleSheet(QString(tr("color:green;background-color:white;")));
-	ui->recvTextEdit->setReadOnly(true);
+    ui->recvTextBrowser->setStyleSheet(QString(tr("color:green;background-color:white;")));
     QFont font;
-    font.setFamily(QString::fromUtf8("Times New Roman"));
+    font.setFamily(QString::fromUtf8("DejaVu Sans Mono"));
     font.setPointSize(11);
-	ui->recvTextEdit->setFont(font);
-	ui->recvTextEdit->setText("我能吞下玻璃而不伤身。I can eat glass, it doesn't hurt me.");
+	ui->recvTextBrowser->setFont(font);
 
     if(0 == ui->serialPortSel->count()) {
         ui->openSerialPortBtn->setEnabled(false);
@@ -76,6 +79,11 @@ MainWidget::MainWidget(QWidget *parent)
     connect(ui->openSerialPortBtn,SIGNAL(clicked()),this,SLOT(openSerialPort()));
 	connect(ui->sendBtn, SIGNAL(clicked()), this, SLOT(sendData()));
 	qRegisterMetaType< QSerialPort::SerialPortError>("QSerialPort::SerialPortError");
+	connect(ui->cleanDisplayArea, SIGNAL(clicked()), this, SLOT(cleanDisplay()));
+	connect(ui->cleanSendArea, SIGNAL(clicked()), this, SLOT(cleanSend()));
+	connect(ui->stopSendBtn, SIGNAL(clicked()), this, SLOT(stopSend()));
+	connect(ui->openFileBtn, SIGNAL(clicked()), this, SLOT(openFile()));
+	connect(ui->sendFileBtn, SIGNAL(clicked()), this, SLOT(sendFile()));
 }
 
 MainWidget::~MainWidget()
@@ -96,25 +104,22 @@ void MainWidget::showFontDlg()
     bool ok;
     QFont font = QFontDialog::getFont(&ok);
     if(ok) {
-		QTextEdit* recvDisplayEdit = ui->recvTextEdit;
-        QTextCursor cursor = recvDisplayEdit->textCursor();
-        cursor.select(QTextCursor::BlockUnderCursor);
-        QTextCharFormat fmt;
-        fmt.setFont(font);
-        cursor.setCharFormat(fmt);
-        //recvDisplayEdit->setFont(font);
-        recvDisplayEdit->append("我能吞下玻璃而不伤身。I can eat glass, it doesn't hurt me.");
+		QTextBrowser* textBrowser = ui->recvTextBrowser;
+        textBrowser->setFont(font);
     }
 }
 
 void MainWidget::showColorDlg()
 {
+    /*
     QColor color = QColorDialog::getColor();
     if(color.isValid()) {
-        QTextEdit* recvDisplayEdit = ui->recvTextEdit;
-        recvDisplayEdit->setStyleSheet(QString(tr("color:")+color.name()));
-        recvDisplayEdit->append("我能吞下玻璃而不伤身。I can eat glass, it doesn't hurt me.");
+		QTextBrowser* textBrowser = ui->recvTextBrowser;
+        QString styleStr = QString::asprintf("color:green;background-color:white;");
+        QStyleSheet colorStye;
+        textBrowser->setStyleSheet(colorStye);
     }
+    */
 }
 
 void MainWidget::openSerialPort(void)
@@ -135,7 +140,7 @@ void MainWidget::openSerialPort(void)
         }
         disconnect(recvThread, &RecvThread::newData,this, &MainWidget::recvData);
 		recvThread->stop();
-		//recvThread->terminate();
+		recvThread->quit();
 		recvThread->wait();
         delete recvThread;
         recvThread = nullptr;
@@ -224,11 +229,18 @@ void MainWidget::openSerialPort(void)
 void MainWidget::recvData(const QByteArray &recvArray)
 {
     if(serialPort!=nullptr) {
-        QTextEdit* recvDisplayEdit = ui->recvTextEdit;
+		QTextBrowser* textBrowser = ui->recvTextBrowser;
         if(ui->hexDisplay->checkState() != Qt::Unchecked) {
-            recvDisplayEdit->append(QString(recvArray.toHex()));
+			QString recvStr = recvArray.toHex().toUpper();
+			for (auto& x : recvStr)
+			{
+				textBrowser->insertPlainText(x);
+			}
         }
-        recvDisplayEdit->append(QString(recvArray));
+		else
+		{
+			textBrowser->insertPlainText(QString(recvArray));
+		}
     }
 }
 
@@ -297,4 +309,82 @@ void MainWidget::sendData()
 		delete hexValid;
 		*/
 	}
+}
+
+void MainWidget::cleanDisplay(void)
+{
+	QTextBrowser* textBrowser = ui->recvTextBrowser;
+	textBrowser->clear();
+}
+
+void MainWidget::cleanSend(void)
+{
+	QTextEdit* textEdit = ui->sendTextEdit;
+	textEdit->clear();
+}
+
+void MainWidget::stopSend(void)
+{
+    /* 停止文件发送线程 */
+    /* 停止定时发送 */
+}
+
+void MainWidget::openFile(void)
+{
+    QString sendFileName = QFileDialog::getOpenFileName(this, QString(tr("打开文件")), QString(tr("%USERPROFILE%/")), QString(tr("任意文件(*.*)")));
+    ui->sendFilePath->setText(sendFileName);
+}
+
+void MainWidget::sendFile(void)
+{
+	QString fileName = ui->sendFilePath->text();
+	if (!fileName.isEmpty())
+	{
+		ui->sendFileBtn->setEnabled(false);
+		ui->sendBtn->setEnabled(false);
+		/* open file and create send thread */
+        sendThread = new SendThread(serialPort);
+		connect(this, &MainWidget::startSendFile, sendThread, &SendThread::startSendFile);
+        connect(sendThread, &SendThread::sendFinished, this, &MainWidget::sendOver);
+        emit startSendFile(fileName);
+	}
+	else
+	{
+		QMessageBox msgBox;
+		msgBox.setWindowTitle(QString(tr("ERROR")));
+		msgBox.setText(QString(tr("Please enter a file name or open a file!")));
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.exec();
+	}
+}
+
+void MainWidget::sendOver(qint64 retVal)
+{
+	ui->sendFileBtn->setEnabled(true);
+	ui->sendBtn->setEnabled(true);
+    QMessageBox msgBox;
+    switch(retVal)
+    {
+    case OPEN_FILE_ERROR:
+        msgBox.setWindowTitle(QString(tr("ERROR")));
+        msgBox.setText(QString(tr("Unable to open the specified file!")));
+        break;
+    case SEND_FILE_ERROR:
+        msgBox.setWindowTitle(QString(tr("ERROR")));
+        msgBox.setText(QString(tr("File failed to send!")));
+        break;
+    case SEND_FILE_SUCCESS:
+        msgBox.setWindowTitle(QString(tr("INFO")));
+        msgBox.setText(QString(tr("The file was sent successfully!")));
+        break;
+    default:
+        msgBox.setWindowTitle(QString(tr("ERROR")));
+        QString msgInfo;
+        msgInfo.asprintf("%lld",retVal);
+		msgInfo = QString(tr("File not sent completed, sent ")) + msgInfo;
+		msgBox.setText(msgInfo);
+        break;
+    }
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
 }

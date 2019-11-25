@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+*.stash
+SerialPortDbg/.vs/SerialPortDbg/v16/.suo
+*.db
+*.user
+SerialPortDbg/SerialPortDbg.sln
+SerialPortDbg/SerialPortDbg.vcxproj
+SerialPortDbg/SerialPortDbg.vcxproj.filters
+SerialPortDbg/ui_mainwidget.h
