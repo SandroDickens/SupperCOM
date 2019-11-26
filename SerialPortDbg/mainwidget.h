@@ -18,9 +18,12 @@ class MainWidget : public QWidget
 public:
     MainWidget(QWidget *parent = nullptr);
     ~MainWidget();
+private:
+	void resFree(void);
 private slots:
-   void showFontDlg(void);
-   void showColorDlg(void);
+   void setFont(void);
+   void setBGColor(void);
+   void setFontColor(void);
    void openSerialPort(void);
    void recvData(const QByteArray &msgArray);
    void portDisconnect(void);
@@ -31,12 +34,19 @@ private slots:
    void openFile(void);
    void sendFile(void);
    void sendOver(qint64 retVal);
+   /* Re-detect the serial port */
+   void redetectPort(void);
+   void timerChanged(int state);
+   void trigSend(void);
 signals:
    void startSendFile(const QString &fileName);
 private:
    QSerialPort* serialPort;
    RecvThread* recvThread;
    SendThread* sendThread;
+   QTimer* trigTimer;
+   QColor fontColor;
+   QColor bgColor;
 private:
     Ui::MainWidget *ui;
 };

@@ -6,15 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>789</width>
-    <height>639</height>
+    <width>779</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>779</width>
+    <height>627</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>779</width>
+    <height>627</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -31,14 +43,14 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>13</x>
-     <y>17</y>
-     <width>761</width>
+     <x>10</x>
+     <y>10</y>
+     <width>760</width>
      <height>609</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <widget class="QTextBrowser" name="recvTextBrowser">
@@ -122,8 +134,8 @@
       </item>
      </layout>
     </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item row="0" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
@@ -259,21 +271,21 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="1">
-         <widget class="QPushButton" name="fontBtn">
+         <widget class="QPushButton" name="setFontBtn">
           <property name="text">
            <string>字体</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QPushButton" name="backGrndBtn">
+         <widget class="QPushButton" name="setBGColorBtn">
           <property name="text">
            <string>背景颜色</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QPushButton" name="fontColorBtn">
+         <widget class="QPushButton" name="setFontColorBtn">
           <property name="text">
            <string>字体颜色</string>
           </property>
@@ -325,7 +337,7 @@
            </font>
           </property>
           <property name="text">
-           <string>时间戳[以换行'\n'分割]</string>
+           <string>时间戳</string>
           </property>
          </widget>
         </item>
@@ -377,9 +389,9 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QCheckBox" name="hexSend">
             <property name="font">
@@ -393,6 +405,23 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="sendNewLine">
+            <property name="font">
+             <font>
+              <family>DejaVu Sans Mono</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送新行</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QLineEdit" name="sendInterval">
             <property name="sizePolicy">
@@ -421,20 +450,10 @@
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QCheckBox" name="sendNewLine">
-            <property name="font">
-             <font>
-              <family>DejaVu Sans Mono</family>
-              <pointsize>11</pointsize>
-             </font>
-            </property>
+           <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>发送新行</string>
+             <string>s</string>
             </property>
            </widget>
           </item>
@@ -521,6 +540,32 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>sendTextEdit</tabstop>
+  <tabstop>sendFilePath</tabstop>
+  <tabstop>serialPortSel</tabstop>
+  <tabstop>baudRateSel</tabstop>
+  <tabstop>dataBitSel</tabstop>
+  <tabstop>stopBitSel</tabstop>
+  <tabstop>checkBitSel</tabstop>
+  <tabstop>openSerialPortBtn</tabstop>
+  <tabstop>setFontBtn</tabstop>
+  <tabstop>setBGColorBtn</tabstop>
+  <tabstop>setFontColorBtn</tabstop>
+  <tabstop>hexDisplay</tabstop>
+  <tabstop>timeStamp</tabstop>
+  <tabstop>cleanDisplayArea</tabstop>
+  <tabstop>cleanSendArea</tabstop>
+  <tabstop>sendBtn</tabstop>
+  <tabstop>stopSendBtn</tabstop>
+  <tabstop>hexSend</tabstop>
+  <tabstop>sendNewLine</tabstop>
+  <tabstop>sendInterval</tabstop>
+  <tabstop>schedSend</tabstop>
+  <tabstop>openFileBtn</tabstop>
+  <tabstop>sendFileBtn</tabstop>
+  <tabstop>recvTextBrowser</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
