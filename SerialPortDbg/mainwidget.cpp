@@ -17,7 +17,7 @@ constexpr auto NUM_CHAR_LINE = 61;
 #ifdef _WIN32
 #include <Windows.h>
 #elif __linux__
-#include <sys/stat.h>
+#include <unistd.h>
 #else
 #error Unsupported operating system
 #endif // _WIN32
