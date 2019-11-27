@@ -31,3 +31,4 @@ FORMS += mainwidget.ui
 SOURCES += main.cpp mainwidget.cpp \
     recvthread.cpp \
     sendthread.cpp
+RC_ICONS = ./rc/logo.ico

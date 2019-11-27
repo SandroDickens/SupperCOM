@@ -50,3 +50,8 @@ SerialPortDbg/debug/moc_sendthread.cpp
 *.log
 *.tlog
 *.txt
+*.opendb
+*.db-shm
+*.db-wal
+*.msi
+*.vdproj

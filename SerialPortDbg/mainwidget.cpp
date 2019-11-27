@@ -1,4 +1,4 @@
-/* user header files */
+﻿/* user header files */
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
 #include "recvthread.h"
