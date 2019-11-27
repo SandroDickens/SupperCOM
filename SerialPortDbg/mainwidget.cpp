@@ -1,27 +1,35 @@
+/* user header files */
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
 #include "recvthread.h"
 #include "sendthread.h"
+
+/* c++ header files */
+#include <algorithm>
+
+/* Qt header files */
 #include <QFontDialog>
 #include <QColorDialog>
 #include <QtSerialPort/QSerialPortInfo>
-#include <QSerialPort>
 #include <QMessageBox>
 #include <QtDebug>
 #include <QFileDialog>
 #include <QTimer>
 
 
-constexpr auto NUM_CHAR_LINE = 61;
-
 #ifdef _WIN32
 #include <Windows.h>
 #elif __linux__
-#include <sys/stat.h>
+#include <unistd.h>
+#include <errno.h>
 #else
 #error Unsupported operating system
 #endif // _WIN32
 
+static bool compareQString(const QString str0, const QString str1)
+{
+    return QString::compare(str0, str1);
+}
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
@@ -36,7 +44,7 @@ MainWidget::MainWidget(QWidget *parent)
 	QList<QSerialPortInfo> serialPortList = QSerialPortInfo::availablePorts();
 	if (serialPortList.empty())
 	{
-		ui->serialPortSel->addItem(QString(tr("No SerialPort")));
+        ui->serialPortSel->addItem(QString(tr("N/A")));
 	}
 	else
 	{
@@ -45,7 +53,7 @@ MainWidget::MainWidget(QWidget *parent)
 		{
 			portNameList.append(info.portName());
 		}
-		qSort(portNameList.begin(), portNameList.end());
+        std::sort(portNameList.begin(), portNameList.end(), compareQString);
 		foreach(const QString portName, portNameList)
 		{
 			ui->serialPortSel->addItem(portName);
@@ -100,7 +108,7 @@ MainWidget::MainWidget(QWidget *parent)
 	connect(ui->stopSendBtn, SIGNAL(clicked()), this, SLOT(stopSend()));
 	connect(ui->openFileBtn, SIGNAL(clicked()), this, SLOT(openFile()));
 	connect(ui->sendFileBtn, SIGNAL(clicked()), this, SLOT(sendFile()));
-	connect(ui->serialPortSel, SIGNAL(clicked()), this, SLOT(redetectPort()));
+    //connect(ui->serialPortSel, SIGNAL(clicked()), this, SLOT(redetectPort()));
 	connect(ui->schedSend, &QCheckBox::stateChanged, this, &MainWidget::timerChanged);
 }
 
@@ -112,21 +120,21 @@ MainWidget::~MainWidget()
 
 inline void MainWidget::resFree(void)
 {
-	disconnect(recvThread, &RecvThread::newData, this, &MainWidget::recvData);
 	if (recvThread != nullptr)
 	{
+        disconnect(recvThread, &RecvThread::newData, this, &MainWidget::recvData);
 		recvThread->stop();
 		recvThread->quit();
 		recvThread->terminate();
 		recvThread->wait();
 		delete recvThread;
 		recvThread = nullptr;
-
 	}
-	disconnect(this, &MainWidget::startSendFile, sendThread, &SendThread::startSendFile);
-	disconnect(sendThread, &SendThread::sendFinished, this, &MainWidget::sendOver);
+
 	if (sendThread != nullptr)
 	{
+        disconnect(this, &MainWidget::startSendFile, sendThread, &SendThread::startSendFile);
+        disconnect(sendThread, &SendThread::sendFinished, this, &MainWidget::sendOver);
 		sendThread->stop();
 		sendThread->quit();
 		sendThread->terminate();
@@ -134,15 +142,16 @@ inline void MainWidget::resFree(void)
 		delete sendThread;
 		sendThread = nullptr;
 	}
-	disconnect(trigTimer, SIGNAL(timeout()), this, SLOT(trigSend()));
 	if (trigTimer != nullptr)
 	{
+        disconnect(trigTimer, SIGNAL(timeout()), this, SLOT(trigSend()));
 		trigTimer->stop();
 		delete trigTimer;
 		trigTimer = nullptr;
 	}
 	if (serialPort != nullptr)
 	{
+        disconnect(serialPort, &QSerialPort::errorOccurred,this, &MainWidget::portErrorProc);
 		if (serialPort->isOpen())
 		{
 			serialPort->clear();
@@ -197,21 +206,18 @@ void MainWidget::openSerialPort(void)
 
     if(serialPort != nullptr)
 	{
-        /* 关闭串口 */
-        disconnect(serialPort, &QSerialPort::errorOccurred,this, &MainWidget::portDisconnect);
+        /* turn off serialport */
         if(serialPort->isOpen())
 		{
             serialPort->clear();
             serialPort->close();
-            ui->openSerialPortBtn->setText(QString(tr("打开串口")));
         }
-		delete serialPort;
-		serialPort = nullptr;
 		resFree();
+        ui->openSerialPortBtn->setText(QString(tr("打开串口")));
     }
     else
     {
-        /* 打开串口 */
+        /* turn on serialport */
         serialPort = new QSerialPort();
         if(serialPort != nullptr)
 		{
@@ -245,7 +251,7 @@ void MainWidget::openSerialPort(void)
                 ui->openSerialPortBtn->setText(QString(tr("关闭串口")));
                 recvThread = new RecvThread(serialPort);
                 connect(recvThread, &RecvThread::newData,this, &MainWidget::recvData);
-                connect(serialPort, &QSerialPort::errorOccurred,this, &MainWidget::portDisconnect);
+                connect(serialPort, &QSerialPort::errorOccurred,this, &MainWidget::portErrorProc);
 				for (int i = 0; i < 3; ++i)
 				{
 					if (serialPort->isOpen())
@@ -268,7 +274,7 @@ void MainWidget::openSerialPort(void)
 				{
 					QMessageBox msgBox;
 					msgBox.setWindowTitle(QString(tr("ERROR")));
-					msgBox.setText(QString(tr("Serial port failed to open!")));
+                    msgBox.setText(QString(tr("failed to open serialport!")) + portName);
 					msgBox.setStandardButtons(QMessageBox::Ok);
 					ui->openSerialPortBtn->click();
 				}
@@ -277,13 +283,24 @@ void MainWidget::openSerialPort(void)
 					recvThread->start();
 				}
             }
-            else {
-                qDebug() << QString(tr("can NOT open serialport \'")) << portName << QString(tr("\'\n"));
-                delete serialPort;
-                serialPort = nullptr;
+            else
+            {
+                qDebug() << QString(tr("can NOT open serialport ")) << portName << QString(tr("\n"));
+                QMessageBox msgBox;
+                msgBox.setWindowTitle(QString(tr("ERROR")));
+#ifdef __linux__
+                int tmp_errno = errno;
+                msgBox.setText(QString(tr("can not open serialport!%1:%2")).arg(tmp_errno).arg(strerror(tmp_errno)));
+#else
+                msgBox.setText(QString(tr("can not open serialport!")));
+#endif
+                resFree();
+                msgBox.setStandardButtons(QMessageBox::Ok);
+                msgBox.exec();
             }
         }
-        else {
+        else
+        {
             qDebug() << QString(tr("can NOT create serialport.\n"));
         }
     }
@@ -309,15 +326,70 @@ void MainWidget::recvData(const QByteArray &recvArray)
     }
 }
 
-void MainWidget::portDisconnect()
+void MainWidget::portErrorProc(QSerialPort::SerialPortError error)
 {
-	return;
-    /*QMessageBox msgBox;
-    msgBox.setWindowTitle(QString(tr("错误")));
-    msgBox.setText(QString(tr("串口已断开连接!")));
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    ui->openSerialPortBtn->click();
-	msgBox.exec();*/
+    bool fatal_error = false;
+    QString err_str;
+    switch (error)
+    {
+    case QSerialPort::NoError:
+        err_str = QString(tr("No error."));
+        break;
+    case QSerialPort::DeviceNotFoundError:
+        err_str = QString(tr("Device not found!"));
+        fatal_error = true;
+        break;
+    case QSerialPort::PermissionError:
+        err_str = QString(tr("Permission deny!"));
+        fatal_error = true;
+        break;
+    case QSerialPort::OpenError:
+        err_str = QString(tr("Device was already opened!"));
+        fatal_error = true;
+        break;
+    case QSerialPort::ParityError:
+        err_str = QString(tr("Parity error detected by the hardware while reading data!"));
+        break;
+    case QSerialPort::FramingError:
+        err_str = QString(tr("Framing error detected by the hardware while reading data!"));
+        break;
+    case QSerialPort::BreakConditionError:
+        err_str = QString(tr("Break condition detected by the hardware on the input line."));
+        break;
+    case QSerialPort::WriteError:
+        err_str = QString(tr("Write error!"));
+        break;
+    case QSerialPort::ReadError:
+        err_str = QString(tr("Read error!"));
+        break;
+    case QSerialPort::ResourceError:
+        err_str = QString(tr("Device is unexpectedly removed from the system?"));
+        fatal_error = true;
+        break;
+    case QSerialPort::UnsupportedOperationError:
+        err_str = QString(tr("Operation is not supported or prohibited by the OS."));
+        break;
+    case QSerialPort::UnknownError:
+        err_str = QString(tr("Unidentified error"));
+        break;
+    case QSerialPort::TimeoutError:
+        err_str = QString(tr("Timeout"));
+        break;
+    case QSerialPort::NotOpenError:
+        err_str = QString(tr("Please turn on the device first！"));
+        fatal_error = true;
+        break;
+    }
+    qDebug() << QString(tr("ERROR：")) + err_str + QString(tr("\n"));
+    if(fatal_error)
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(QString(tr("ERROR")));
+        msgBox.setText(err_str);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        ui->openSerialPortBtn->click();
+        msgBox.exec();
+    }
 }
 
 void MainWidget::sendData()
@@ -441,6 +513,7 @@ void MainWidget::sendOver(qint64 retVal)
     msgBox.exec();
 }
 
+/*
 void MainWidget::redetectPort(void)
 {
 	ui->serialPortSel->clear();
@@ -463,6 +536,7 @@ void MainWidget::redetectPort(void)
 		}
 	}
 }
+*/
 
 void MainWidget::timerChanged(int state)
 {

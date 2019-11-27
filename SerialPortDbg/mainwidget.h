@@ -2,6 +2,7 @@
 #define MAINWIDGET_H
 
 #include <QWidget>
+#include <QSerialPort>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWidget; }
@@ -26,7 +27,7 @@ private slots:
    void setFontColor(void);
    void openSerialPort(void);
    void recvData(const QByteArray &msgArray);
-   void portDisconnect(void);
+   void portErrorProc(QSerialPort::SerialPortError error);
    void sendData(void);
    void cleanDisplay(void);
    void cleanSend(void);
@@ -34,8 +35,7 @@ private slots:
    void openFile(void);
    void sendFile(void);
    void sendOver(qint64 retVal);
-   /* Re-detect the serial port */
-   void redetectPort(void);
+   //void redetectPort(void);
    void timerChanged(int state);
    void trigSend(void);
 signals:
