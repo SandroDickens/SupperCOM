@@ -5,8 +5,6 @@
 TEMPLATE = app
 TARGET = SerialPortDbg
 INCLUDEPATH += .
-QMAKE_CFLAGS += -Wno-deprecated-copy -Wno-deprecated-declarations
-QMAKE_CXXFLAGS += -Wno-deprecated-copy -Wno-deprecated-declarations
 
 QT += serialport
 
