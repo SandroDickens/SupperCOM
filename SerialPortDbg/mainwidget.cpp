@@ -28,7 +28,7 @@
 
 static bool compareQString(const QString str0, const QString str1)
 {
-    return QString::compare(str0, str1);
+    return QString::compare(str1, str0);
 }
 
 MainWidget::MainWidget(QWidget *parent)
