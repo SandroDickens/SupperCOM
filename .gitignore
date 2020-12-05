@@ -55,3 +55,6 @@ SerialPortDbg/debug/moc_sendthread.cpp
 *.db-wal
 *.msi
 *.vdproj
+
+build-SerialPortDbg*
+SerialPortDbg/msvc_make.bat
