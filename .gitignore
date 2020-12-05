@@ -34,15 +34,8 @@
 SerialPortDbg/.vs/SerialPortDbg/v16/.suo
 *.db
 *.user
-SerialPortDbg/SerialPortDbg.sln
-SerialPortDbg/SerialPortDbg.vcxproj
-SerialPortDbg/SerialPortDbg.vcxproj.filters
-SerialPortDbg/ui_mainwidget.h
+SerialPortDbg/*
 *.ipch
-SerialPortDbg/debug/moc_mainwidget.cpp
-SerialPortDbg/debug/moc_predefs.h
-SerialPortDbg/debug/moc_recvthread.cpp
-SerialPortDbg/debug/moc_sendthread.cpp
 *.ilk
 *.pdb
 *.props
