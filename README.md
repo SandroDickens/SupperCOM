@@ -12,11 +12,6 @@ To use this program, you must follow the GPL license agreement.
 ## Supported platforms:
 * Windows7/8/8.1/10
 * Linux 4.14 above
-## 下载/Downloads
-你可以通过下面的链接下载我编译好的二进制版本：  
-You can download my compiled binary version via the link below：  
-https://github.com/YukPingFong/SerialPortDbg/releases/tag/V0.0.1
-
 ## feedback
 如果你在使用过程中发现任何bug或有好的建议，请通过下面的邮箱联系我。  
 If you find any bugs or have good suggestions during use, please contact me through the following email:
