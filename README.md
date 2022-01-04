@@ -15,7 +15,7 @@ To use this program, you must follow the GPL license agreement.
 ## 下载/Downloads
 你可以通过下面的链接下载我编译好的二进制版本：  
 You can download my compiled binary version via the link below：
-https://www.nereus.work/files/serialport_debugger.zip
+
 
 ## feedback
 如果你在使用过程中发现任何bug或有好的建议，请通过下面的邮箱联系我。  
