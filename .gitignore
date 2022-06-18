@@ -1,60 +1,73 @@
-# Prerequisites
-*.d
+# This file is used to ignore files which are generated
+# ----------------------------------------------------------------------------
 
-# Compiled Object files
-*.slo
-*.lo
+*~
+*.autosave
+*.a
+*.core
+*.moc
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+*.orig
+*.rej
 *.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
+*.so.*
+*_pch.h.cpp
+*_resource.rc
+*.qm
+.#*
+*.*#
+core
+!core/
+tags
+.DS_Store
+.directory
+*.debug
+Makefile*
+*.prl
 *.app
-*.stash
-SerialPortDbg/.vs/SerialPortDbg/v16/.suo
-*.db
-*.user
-SerialPortDbg/SerialPortDbg.sln
-SerialPortDbg/SerialPortDbg.vcxproj
-SerialPortDbg/SerialPortDbg.vcxproj.filters
-SerialPortDbg/ui_mainwidget.h
-*.ipch
-SerialPortDbg/debug/moc_mainwidget.cpp
-SerialPortDbg/debug/moc_predefs.h
-SerialPortDbg/debug/moc_recvthread.cpp
-SerialPortDbg/debug/moc_sendthread.cpp
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+Thumbs.db
+*.res
+*.rc
+/.qmake.cache
+/.qmake.stash
+
+# qtcreator generated files
+*.pro.user*
+
+# xemacs temporary files
+*.flc
+
+# Vim temporary files
+.*.swp
+
+# Visual Studio generated files
+*.ib_pdb_index
+*.idb
 *.ilk
 *.pdb
-*.props
-*.idx
-*.log
-*.tlog
-*.txt
-*.opendb
-*.db-shm
-*.db-wal
-*.msi
-*.vdproj
+*.sln
+*.suo
+*.vcproj
+*vcproj.*.*.user
+*.ncb
+*.sdf
+*.opensdf
+*.vcxproj
+*vcxproj.*
 
-build-SerialPortDbg*
-SerialPortDbg/msvc_make.bat
+# MinGW generated files
+*.Debug
+*.Release
+
+# Python byte code
+*.pyc
+
+# Binaries
+# --------
+*.dll
+*.exe
+

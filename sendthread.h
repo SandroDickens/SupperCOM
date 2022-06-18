@@ -5,8 +5,6 @@
 
 class QSerialPort;
 
-class QReadWriteLock;
-
 constexpr qint64 OPEN_FILE_ERROR = -1;
 constexpr qint64 SEND_FILE_ERROR = -2;
 constexpr qint64 SEND_FILE_SUCCESS = 0;
@@ -15,7 +13,7 @@ class SendThread : public QThread
 {
 Q_OBJECT
 public:
-	SendThread(QSerialPort *port);
+	explicit SendThread(QSerialPort *port);
 
 	~SendThread() override;
 
@@ -25,7 +23,6 @@ public:
 
 private:
 	QSerialPort *serialPort;
-	QReadWriteLock *rwLock;
 	QString sendFileName;
 	bool exited;
 public slots:

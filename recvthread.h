@@ -2,10 +2,9 @@
 #define RECVTHREAD_H
 
 #include <QThread>
+#include <QSemaphore>
 
 class QSerialPort;
-
-class QReadWriteLock;
 
 class RecvThread : public QThread
 {
@@ -21,11 +20,15 @@ public:
 
 private:
 	QSerialPort *serialPort;
-	QReadWriteLock *rwLock;
+	QSemaphore dataInSem;
 	bool exited;
+public slots:
+	void onPortClosed();
+	void notifyDataIn();
+
 signals:
 
-	void newData(const QByteArray &msgArray);
+	void dataIn(const QByteArray &msgArray);
 };
 
 #endif // RECVTHREAD_H

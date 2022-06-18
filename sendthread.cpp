@@ -5,7 +5,6 @@
 
 /* Qt head file */
 #include <QSerialPort>
-#include <QReadWriteLock>
 #include <QFile>
 #include <QMessageBox>
 
@@ -15,8 +14,6 @@ SendThread::SendThread(QSerialPort *port)
 {
 	Q_ASSERT(port != nullptr);
 	serialPort = port;
-
-	rwLock = new QReadWriteLock();
 	exited = false;
 }
 
@@ -25,11 +22,6 @@ SendThread::~SendThread()
 	this->stop();
 	this->quit();
 	this->wait();
-	if (rwLock != nullptr)
-	{
-		delete rwLock;
-		rwLock = nullptr;
-	}
 }
 
 void SendThread::startSendFile(const QString &fileName)
@@ -58,10 +50,7 @@ void SendThread::run()
 			memset(sendBuf.get(), 0, MAX_WRITE_LEN);
 			while (!serialPort->waitForBytesWritten(1000))
 			{
-				rwLock->lockForRead();
-				bool _t_exit = exited;
-				rwLock->unlock();
-				if (_t_exit)
+				if (exited)
 				{
 					break;
 				}
@@ -72,13 +61,10 @@ void SendThread::run()
 				wLen = serialPort->write(sendBuf.get(), readLen);
 				if (wLen != -1)
 				{
-					readLen += wLen;
+					sendCount += wLen;
 				}
 			}
-			rwLock->lockForRead();
-			bool _t_exit = exited;
-			rwLock->unlock();
-			if (_t_exit)
+			if (exited)
 			{
 				break;
 			}
@@ -101,10 +87,5 @@ void SendThread::run()
 
 void SendThread::stop()
 {
-	if (rwLock != nullptr)
-	{
-		rwLock->lockForWrite();
-		exited = true;
-		rwLock->unlock();
-	}
+	exited = true;
 }

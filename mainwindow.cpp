@@ -1,6 +1,7 @@
-﻿/* user header files */
-#include "mainwidget.h"
-#include "ui_mainwidget.h"
+#include "mainwindow.h"
+#include "./ui_mainwindow.h"
+
+/* user header files */
 #include "recvthread.h"
 #include "sendthread.h"
 
@@ -32,7 +33,7 @@ static bool compareQString(const QString &str0, const QString &str1)
 	return 0 == QString::compare(str1, str0);
 }
 
-MainWidget::MainWidget(QWidget *parent) : QWidget(parent), ui(new Ui::MainWidget)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
 	serialPort = nullptr;
@@ -108,20 +109,19 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent), ui(new Ui::MainWidget
 	connect(ui->openFileBtn, SIGNAL(clicked()), this, SLOT(openFile()));
 	connect(ui->sendFileBtn, SIGNAL(clicked()), this, SLOT(sendFile()));
 	//connect(ui->serialPortSel, SIGNAL(clicked()), this, SLOT(redetectPort()));
-	connect(ui->schedSend, &QCheckBox::stateChanged, this, &MainWidget::timerChanged);
+	connect(ui->schedSend, &QCheckBox::stateChanged, this, &MainWindow::timerChanged);
 }
 
-MainWidget::~MainWidget()
+MainWindow::~MainWindow()
 {
-	resFree();
 	delete ui;
 }
 
-inline void MainWidget::resFree()
+inline void MainWindow::resFree()
 {
 	if (recvThread != nullptr)
 	{
-		disconnect(recvThread, &RecvThread::newData, this, &MainWidget::recvData);
+		disconnect(recvThread, &RecvThread::dataIn, this, &MainWindow::recvData);
 		recvThread->stop();
 		recvThread->quit();
 		recvThread->terminate();
@@ -132,8 +132,8 @@ inline void MainWidget::resFree()
 
 	if (sendThread != nullptr)
 	{
-		disconnect(this, &MainWidget::startSendFile, sendThread, &SendThread::startSendFile);
-		disconnect(sendThread, &SendThread::sendFinished, this, &MainWidget::sendOver);
+		disconnect(this, &MainWindow::startSendFile, sendThread, &SendThread::startSendFile);
+		disconnect(sendThread, &SendThread::sendFinished, this, &MainWindow::sendOver);
 		sendThread->stop();
 		sendThread->quit();
 		sendThread->terminate();
@@ -150,7 +150,8 @@ inline void MainWidget::resFree()
 	}
 	if (serialPort != nullptr)
 	{
-		disconnect(serialPort, &QSerialPort::errorOccurred, this, &MainWidget::portErrorProc);
+		disconnect(this, &MainWindow::portClosed, recvThread, &RecvThread::onPortClosed);
+		disconnect(serialPort, &QSerialPort::errorOccurred, this, &MainWindow::portErrorProc);
 		if (serialPort->isOpen())
 		{
 			serialPort->clear();
@@ -161,7 +162,7 @@ inline void MainWidget::resFree()
 	}
 }
 
-void MainWidget::setFont()
+void MainWindow::setFont()
 {
 	bool ok;
 	QFont font = QFontDialog::getFont(&ok);
@@ -172,7 +173,7 @@ void MainWidget::setFont()
 	}
 }
 
-void MainWidget::setBGColor()
+void MainWindow::setBGColor()
 {
 	QColor newColor = QColorDialog::getColor();
 	if (newColor.isValid())
@@ -186,7 +187,7 @@ void MainWidget::setBGColor()
 	}
 }
 
-void MainWidget::setFontColor()
+void MainWindow::setFontColor()
 {
 	QColor newColor = QColorDialog::getColor();
 	if (newColor.isValid())
@@ -200,7 +201,7 @@ void MainWidget::setFontColor()
 	}
 }
 
-void MainWidget::openSerialPort()
+void MainWindow::openSerialPort()
 {
 	QString portName = ui->serialPortSel->currentText();
 	QString baudRate = ui->baudRateSel->currentText();
@@ -254,8 +255,8 @@ void MainWidget::openSerialPort()
 				serialPort->setDataTerminalReady(true);
 				ui->openSerialPortBtn->setText(QString(tr("关闭串口")));
 				recvThread = new RecvThread(serialPort);
-				connect(recvThread, &RecvThread::newData, this, &MainWidget::recvData);
-				connect(serialPort, &QSerialPort::errorOccurred, this, &MainWidget::portErrorProc);
+				connect(recvThread, &RecvThread::dataIn, this, &MainWindow::recvData);
+				connect(serialPort, &QSerialPort::errorOccurred, this, &MainWindow::portErrorProc);
 				for (int i = 0; i < 3; ++i)
 				{
 					if (serialPort->isOpen())
@@ -310,7 +311,7 @@ void MainWidget::openSerialPort()
 	}
 }
 
-void MainWidget::recvData(const QByteArray &recvArray)
+void MainWindow::recvData(const QByteArray &recvArray)
 {
 	if (serialPort != nullptr)
 	{
@@ -330,7 +331,7 @@ void MainWidget::recvData(const QByteArray &recvArray)
 	}
 }
 
-void MainWidget::portErrorProc(QSerialPort::SerialPortError error)
+void MainWindow::portErrorProc(QSerialPort::SerialPortError error)
 {
 	bool fatal_error = false;
 	QString err_str;
@@ -387,7 +388,7 @@ void MainWidget::portErrorProc(QSerialPort::SerialPortError error)
 	}
 }
 
-void MainWidget::sendData()
+void MainWindow::sendData()
 {
 	if (serialPort != nullptr)
 	{
@@ -417,19 +418,19 @@ void MainWidget::sendData()
 	}
 }
 
-void MainWidget::cleanDisplay()
+void MainWindow::cleanDisplay()
 {
 	QTextBrowser *textBrowser = ui->recvTextBrowser;
 	textBrowser->clear();
 }
 
-void MainWidget::cleanSend()
+void MainWindow::cleanSend()
 {
 	QTextEdit *textEdit = ui->sendTextEdit;
 	textEdit->clear();
 }
 
-void MainWidget::stopSend()
+void MainWindow::stopSend()
 {
 	if (trigTimer != nullptr)
 	{
@@ -447,14 +448,14 @@ void MainWidget::stopSend()
 	}
 }
 
-void MainWidget::openFile()
+void MainWindow::openFile()
 {
 	QString sendFileName = QFileDialog::getOpenFileName(this, QString(tr("打开文件")), QString(tr("%USERPROFILE%/")),
 	                                                    QString(tr("任意文件(*.*)")));
 	ui->sendFilePath->setText(sendFileName);
 }
 
-void MainWidget::sendFile()
+void MainWindow::sendFile()
 {
 	QString fileName = ui->sendFilePath->text();
 	if (!fileName.isEmpty())
@@ -463,8 +464,8 @@ void MainWidget::sendFile()
 		ui->sendBtn->setEnabled(false);
 		/* open file and create send thread */
 		sendThread = new SendThread(serialPort);
-		connect(this, &MainWidget::startSendFile, sendThread, &SendThread::startSendFile);
-		connect(sendThread, &SendThread::sendFinished, this, &MainWidget::sendOver);
+		connect(this, &MainWindow::startSendFile, sendThread, &SendThread::startSendFile);
+		connect(sendThread, &SendThread::sendFinished, this, &MainWindow::sendOver);
 		emit startSendFile(fileName);
 	}
 	else
@@ -477,7 +478,7 @@ void MainWidget::sendFile()
 	}
 }
 
-void MainWidget::sendOver(qint64 retVal)
+void MainWindow::sendOver(qint64 retVal)
 {
 	ui->sendFileBtn->setEnabled(true);
 	ui->sendBtn->setEnabled(true);
@@ -509,7 +510,7 @@ void MainWidget::sendOver(qint64 retVal)
 }
 
 /*
-void MainWidget::redetectPort(void)
+void MainWindow::redetectPort(void)
 {
 	ui->serialPortSel->clear();
 	QList<QSerialPortInfo> serialPortList = QSerialPortInfo::availablePorts();
@@ -533,7 +534,7 @@ void MainWidget::redetectPort(void)
 }
 */
 
-void MainWidget::timerChanged(int state)
+void MainWindow::timerChanged(int state)
 {
 	QLineEdit *timerEdit = ui->sendInterval;
 	QString timerInterval = timerEdit->text();
@@ -610,7 +611,7 @@ void MainWidget::timerChanged(int state)
 	}
 }
 
-void MainWidget::trigSend()
+void MainWindow::trigSend()
 {
 	sendData();
 }
