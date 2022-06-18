@@ -3,13 +3,13 @@
 #include <QSerialPort>
 #include <QReadWriteLock>
 
-RecvThread::RecvThread(QSerialPort* port)
+RecvThread::RecvThread(QSerialPort *port)
 {
-    Q_ASSERT(port != nullptr);
-    serialPort = port;
+	Q_ASSERT(port != nullptr);
+	serialPort = port;
 	rwLock = nullptr;
-    rwLock = new QReadWriteLock();
-    exited = false;
+	rwLock = new QReadWriteLock();
+	exited = false;
 }
 
 RecvThread::~RecvThread()
@@ -26,21 +26,21 @@ RecvThread::~RecvThread()
 
 void RecvThread::run()
 {
-    while(true)
+	while (true)
 	{
-        if(serialPort->waitForReadyRead(1000))
+		if (serialPort->waitForReadyRead(1000))
 		{
-            QByteArray recvArray = serialPort->readAll();
-            emit newData(recvArray);
-        }
-        rwLock->lockForRead();
-        bool _t_exit = exited;
-        rwLock->unlock();
-        if(_t_exit)
+			QByteArray recvArray = serialPort->readAll();
+			emit newData(recvArray);
+		}
+		rwLock->lockForRead();
+		bool _t_exit = exited;
+		rwLock->unlock();
+		if (_t_exit)
 		{
-            break;
-        }
-    }
+			break;
+		}
+	}
 }
 
 void RecvThread::stop()

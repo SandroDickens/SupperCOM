@@ -17,27 +17,27 @@ class MainWidget : public QWidget
     Q_OBJECT
 
 public:
-    MainWidget(QWidget *parent = nullptr);
-    ~MainWidget();
+    explicit MainWidget(QWidget *parent = nullptr);
+    ~MainWidget() override;
 private:
-	void resFree(void);
+	void resFree();
 private slots:
-   void setFont(void);
-   void setBGColor(void);
-   void setFontColor(void);
-   void openSerialPort(void);
+   void setFont();
+   void setBGColor();
+   void setFontColor();
+   void openSerialPort();
    void recvData(const QByteArray &msgArray);
    void portErrorProc(QSerialPort::SerialPortError error);
-   void sendData(void);
-   void cleanDisplay(void);
-   void cleanSend(void);
-   void stopSend(void);
-   void openFile(void);
-   void sendFile(void);
+   void sendData();
+   void cleanDisplay();
+   void cleanSend();
+   void stopSend();
+   void openFile();
+   void sendFile();
    void sendOver(qint64 retVal);
    //void redetectPort(void);
    void timerChanged(int state);
-   void trigSend(void);
+   void trigSend();
 signals:
    void startSendFile(const QString &fileName);
 private:

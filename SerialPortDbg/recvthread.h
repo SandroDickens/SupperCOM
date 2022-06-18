@@ -4,23 +4,28 @@
 #include <QThread>
 
 class QSerialPort;
+
 class QReadWriteLock;
 
 class RecvThread : public QThread
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    RecvThread(QSerialPort* port);
-    ~RecvThread() override;
+	explicit RecvThread(QSerialPort *port);
 
-    void run() override;
-    void stop();
+	~RecvThread() override;
+
+	void run() override;
+
+	void stop();
+
 private:
-    QSerialPort* serialPort;
-    QReadWriteLock* rwLock;
-    bool exited;
+	QSerialPort *serialPort;
+	QReadWriteLock *rwLock;
+	bool exited;
 signals:
-    void newData(const QByteArray &msgArray);
+
+	void newData(const QByteArray &msgArray);
 };
 
 #endif // RECVTHREAD_H
