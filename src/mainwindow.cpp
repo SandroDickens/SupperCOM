@@ -15,6 +15,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QTimer>
+#include <QDebug>
 
 
 #ifdef _WIN32
@@ -22,8 +23,10 @@
 #include <Windows.h>
 
 #elif __linux__
+
 #include <unistd.h>
-#include <errno.h>
+#include <cerrno>
+
 #else
 #error Unsupported operating system
 #endif // _WIN32
@@ -49,12 +52,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	else
 	{
 		QStringList portNameList;
-		for (const QSerialPortInfo &info: serialPortList)
+		for (const QSerialPortInfo &info:serialPortList)
 		{
 			portNameList.append(info.portName());
 		}
 		std::sort(portNameList.begin(), portNameList.end(), compareQString);
-		for (const QString &portName: portNameList)
+		for (const QString &portName:portNameList)
 		{
 			ui->serialPortSel->addItem(portName);
 		}
@@ -62,21 +65,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 	/* set baud rate */
 	int baudRate[] = {9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600};
-	for (int rate: baudRate)
+	for (int rate:baudRate)
 	{
 		ui->baudRateSel->addItem(QString::number(rate));
 	}
 	ui->baudRateSel->setCurrentIndex(5);
 	/* set data bits */
 	int dataBits[] = {5, 6, 7, 8};
-	for (int bits: dataBits)
+	for (int bits:dataBits)
 	{
 		ui->dataBitSel->addItem(QString::number(bits));
 	}
 	ui->dataBitSel->setCurrentIndex(3);
 	/* set stop bits */
 	int stopBits[] = {1, 2};
-	for (int bits: stopBits)
+	for (int bits:stopBits)
 	{
 		ui->stopBitSel->addItem(QString::number(bits));
 	}
@@ -319,7 +322,7 @@ void MainWindow::recvData(const QByteArray &recvArray)
 		if (ui->hexDisplay->checkState() != Qt::Unchecked)
 		{
 			QString recvStr = recvArray.toHex().toUpper();
-			for (auto &x: recvStr)
+			for (auto &x:recvStr)
 			{
 				textBrowser->insertPlainText(x);
 			}

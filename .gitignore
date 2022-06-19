@@ -35,6 +35,10 @@ Thumbs.db
 /.qmake.cache
 /.qmake.stash
 
+# CMake
+cmake-build-*
+/CMakeLists.txt.user
+
 # qtcreator generated files
 *.pro.user*
 
@@ -59,6 +63,9 @@ Thumbs.db
 *.vcxproj
 *vcxproj.*
 
+# CLion
+/.idea
+
 # MinGW generated files
 *.Debug
 *.Release
@@ -70,4 +77,3 @@ Thumbs.db
 # --------
 *.dll
 *.exe
-

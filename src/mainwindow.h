@@ -74,7 +74,7 @@ private:
 	QColor fontColor;
 	QColor bgColor;
 private:
-	Ui::MainWindow *ui;
+	Ui::MainWindow *ui{};
 };
 
 #endif // MAINWINDOW_H

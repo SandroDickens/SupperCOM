@@ -11,7 +11,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_PREFIX_PATH "D:/Qt/Qt6/msvc")
+if (WIN32)
+    set(CMAKE_PREFIX_PATH "D:/Qt/Qt6/msvc")
+endif ()
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort LinguistTools)
@@ -19,12 +21,12 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort Lingui
 set(TS_FILES SupperCOM_zh_CN.ts)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        recvthread.cpp
-        sendthread.cpp
-        mainwindow.h
-        mainwindow.ui
+        src/main.cpp
+        src/mainwindow.cpp
+        src/recvthread.cpp
+        src/sendthread.cpp
+        src/mainwindow.h
+        src/mainwindow.ui
         ${TS_FILES}
         )
 
