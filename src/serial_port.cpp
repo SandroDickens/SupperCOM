@@ -1,5 +1,6 @@
 #include <mutex>
 
+
 #include "serial_port.h"
 
 #ifdef __linux__
@@ -54,10 +55,11 @@ bool SerialPort::openSerialPort(const std::string &port)
 		return true;
 	}
 #ifdef _WIN32
-	WCHAR szPort[15] = TEXT("\0");
-	wsprintf(szPort, TEXT("COM%d"), port);
-	fd = CreateFile(szPort, GENERIC_READ|GENERIC_WRITE, 0, nullptr, OPEN_EXISTING,
-					FILE_ATTRIBUTE_NORMAL, nullptr);
+	int count = MultiByteToWideChar(CP_UTF8, 0, port.c_str(), (int)port.length(), nullptr, 0);
+	std::wstring portName(count, 0);
+	MultiByteToWideChar(CP_UTF8, 0, port.c_str(), (int)port.length(), &portName[0], count);
+	fd = CreateFile(portName.c_str(), GENERIC_READ|GENERIC_WRITE, 0, nullptr, OPEN_EXISTING,
+	                FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (fd == INVALID_HANDLE_VALUE)
 	{
 		printf("CreateFile failed with error %lu.\n", GetLastError());
@@ -79,7 +81,6 @@ bool SerialPort::openSerialPort(const std::string &port)
 
 	if (TRUE != SetupComm(fd, 819200, 819200))
 	{
-		auto error = GetLastError();
 		printf("SetupComm failed with error %lu.\n", GetLastError());
 		return false;
 	}
@@ -275,15 +276,6 @@ int SerialPort::setParity(SerialPort::Parity parity) const
 #endif
 }
 
-int SerialPort::setFlowControl(SerialPort::FlowControl flowControl) const
-{
-#ifdef _WIN32
-#endif
-#ifdef __linux__
-#endif
-	return 0;
-}
-
 unsigned long SerialPort::recv(void *buffer, unsigned long size) const
 {
 	if (fd == INVALID_FD)
@@ -319,10 +311,6 @@ unsigned long SerialPort::send(const char *buffer, unsigned long size) const
 		return 0;
 	}
 #ifdef _WIN32
-	DWORD dwErrorFlags = CE_BREAK|CE_FRAME|CE_OVERRUN|CE_RXOVER|CE_RXPARITY;
-	COMSTAT ComStat;
-
-	//ClearCommError(fd, &dwErrorFlags, nullptr);
 	unsigned long bytesWritten = 0;
 	if (TRUE != WriteFile(fd, buffer, size, &bytesWritten, nullptr))
 	{
@@ -353,7 +341,7 @@ bool SerialPort::waitReadyRead()
 	unsigned long dwEventMask;
 	if (TRUE == WaitCommEvent(fd, &dwEventMask, nullptr))
 	{
-		if ((dwEventMask & EV_RXCHAR) != 0)
+		if ((dwEventMask&EV_RXCHAR) != 0)
 		{
 			return true;
 		}

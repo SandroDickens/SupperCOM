@@ -21,6 +21,7 @@
 #ifdef _WIN32
 
 #include <Windows.h>
+#include <iostream>
 
 #elif __linux__
 
@@ -55,12 +56,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	else
 	{
 		QStringList portNameList;
-		for (const QSerialPortInfo &info:serialPortList)
+		for (const QSerialPortInfo &info: serialPortList)
 		{
 			portNameList.append(info.portName());
 		}
 		std::sort(portNameList.begin(), portNameList.end(), compareQString);
-		for (const QString &portName:portNameList)
+		for (const QString &portName: portNameList)
 		{
 			ui->serialPortSel->addItem(portName);
 		}
@@ -68,21 +69,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 	/* set baud rate */
 	int baudRate[] = {9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600};
-	for (int rate:baudRate)
+	for (int rate: baudRate)
 	{
 		ui->baudRateSel->addItem(QString::number(rate));
 	}
 	ui->baudRateSel->setCurrentIndex(5);
 	/* set data bits */
 	int dataBits[] = {5, 6, 7, 8};
-	for (int bits:dataBits)
+	for (int bits: dataBits)
 	{
 		ui->dataBitSel->addItem(QString::number(bits));
 	}
 	ui->dataBitSel->setCurrentIndex(3);
 	/* set stop bits */
 	int stopBits[] = {1, 2};
-	for (int bits:stopBits)
+	for (int bits: stopBits)
 	{
 		ui->stopBitSel->addItem(QString::number(bits));
 	}
@@ -358,11 +359,6 @@ void MainWindow::openSerialPort()
 						qDebug() << QString(tr("Set serial port parity failed!\n"));
 						return;
 					}
-					if (-1 == serialPort->setFlowControl(SerialPort::FlowControl::NoFlowControl))
-					{
-						qDebug() << QString(tr("Set serial port flow control failed!\n"));
-						return;
-					}
 					recvThread->start();
 				}
 			}
@@ -406,7 +402,7 @@ void MainWindow::recvData(unsigned long event)
 		QTextBrowser *textBrowser = ui->recvTextBrowser;
 		if (ui->hexDisplay->checkState() != Qt::Unchecked)
 		{
-			for (char i:buffer)
+			for (char i: buffer)
 			{
 				QString ch = QString::number(i, 10);
 				textBrowser->insertPlainText(ch.toUpper());

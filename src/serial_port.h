@@ -108,8 +108,6 @@ public:
 
 	[[nodiscard]] int setParity(SerialPort::Parity parity) const;
 
-	[[nodiscard]] int setFlowControl(SerialPort::FlowControl flowControl) const;
-
 	/* Read data from SerialPort */
 	unsigned long recv(void *buffer, unsigned long size) const;
 
