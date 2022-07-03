@@ -4,13 +4,14 @@
 #include <memory>
 
 /* Qt head file */
-#include <QSerialPort>
 #include <QFile>
 #include <QMessageBox>
 
+#include "serial_port.h"
+
 static const int MAX_WRITE_LEN = 4096;
 
-SendThread::SendThread(QSerialPort *port)
+SendThread::SendThread(SerialPort *port)
 {
 	Q_ASSERT(port != nullptr);
 	serialPort = port;
@@ -48,13 +49,6 @@ void SendThread::run()
 		while (!file.atEnd())
 		{
 			memset(sendBuf.get(), 0, MAX_WRITE_LEN);
-			while (!serialPort->waitForBytesWritten(1000))
-			{
-				if (exited)
-				{
-					break;
-				}
-			}
 			qint64 readLen = file.read(sendBuf.get(), 4096);
 			if (readLen > 0)
 			{

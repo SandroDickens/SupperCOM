@@ -1,9 +1,9 @@
 #ifndef SENDTHREAD_H
 #define SENDTHREAD_H
 
-#include <QThread>
+#include "serial_port.h"
 
-class QSerialPort;
+#include <QThread>
 
 constexpr qint64 OPEN_FILE_ERROR = -1;
 constexpr qint64 SEND_FILE_ERROR = -2;
@@ -13,7 +13,7 @@ class SendThread : public QThread
 {
 Q_OBJECT
 public:
-	explicit SendThread(QSerialPort *port);
+	explicit SendThread(SerialPort *port);
 
 	~SendThread() override;
 
@@ -22,7 +22,7 @@ public:
 	void stop();
 
 private:
-	QSerialPort *serialPort;
+	SerialPort *serialPort;
 	QString sendFileName;
 	bool exited;
 public slots:

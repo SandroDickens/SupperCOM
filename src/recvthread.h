@@ -4,13 +4,13 @@
 #include <QThread>
 #include <QSemaphore>
 
-class QSerialPort;
+class SerialPort;
 
 class RecvThread : public QThread
 {
 Q_OBJECT
 public:
-	explicit RecvThread(QSerialPort *port);
+	explicit RecvThread(SerialPort *port);
 
 	~RecvThread() override;
 
@@ -19,16 +19,15 @@ public:
 	void stop();
 
 private:
-	QSerialPort *serialPort;
-	QSemaphore dataInSem;
+	SerialPort *serialPort;
 	bool exited;
 public slots:
+
 	void onPortClosed();
-	void notifyDataIn();
 
 signals:
 
-	void dataIn(const QByteArray &msgArray);
+	void readyRead(unsigned long event);
 };
 
 #endif // RECVTHREAD_H

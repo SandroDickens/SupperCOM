@@ -1,9 +1,8 @@
 #include "recvthread.h"
+#include "serial_port.h"
 
-#include <QSerialPort>
-#include <QSemaphore>
 
-RecvThread::RecvThread(QSerialPort *port)
+RecvThread::RecvThread(SerialPort *port)
 {
 	Q_ASSERT(port != nullptr);
 	serialPort = port;
@@ -17,21 +16,14 @@ RecvThread::~RecvThread()
 	this->wait();
 }
 
-void RecvThread::notifyDataIn()
-{
-	dataInSem.release();
-}
 
 void RecvThread::run()
 {
-	connect(serialPort, &QSerialPort::readyRead, this, &RecvThread::notifyDataIn);
 	while (true)
 	{
-		dataInSem.acquire();
-		QByteArray recvArray = serialPort->readAll();
-		if (!recvArray.isEmpty())
+		if (serialPort->waitReadyRead())
 		{
-			emit dataIn(recvArray);
+			emit readyRead(0);
 		}
 		if (exited)
 		{
@@ -42,11 +34,10 @@ void RecvThread::run()
 
 void RecvThread::stop()
 {
-	disconnect(serialPort, &QSerialPort::readyRead, this, &RecvThread::notifyDataIn);
 	exited = true;
 }
 
 void RecvThread::onPortClosed()
 {
-	disconnect(serialPort, &QSerialPort::readyRead, this, &RecvThread::notifyDataIn);
+	exited = true;
 }
