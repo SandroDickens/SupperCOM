@@ -47,7 +47,7 @@ SerialPort::SerialPort()
 	fd = INVALID_FD;
 }
 
-bool SerialPort::openSerialPort(int port)
+bool SerialPort::openSerialPort(const std::string &port)
 {
 	if (fd != INVALID_FD)
 	{
@@ -57,7 +57,7 @@ bool SerialPort::openSerialPort(int port)
 	WCHAR szPort[15] = TEXT("\0");
 	wsprintf(szPort, TEXT("COM%d"), port);
 	fd = CreateFile(szPort, GENERIC_READ|GENERIC_WRITE, 0, nullptr, OPEN_EXISTING,
-	                FILE_ATTRIBUTE_NORMAL, nullptr);
+					FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (fd == INVALID_HANDLE_VALUE)
 	{
 		printf("CreateFile failed with error %lu.\n", GetLastError());
@@ -85,15 +85,20 @@ bool SerialPort::openSerialPort(int port)
 	}
 #endif
 #ifdef __linux__
-	char ttySerial[12];
-	sprintf(ttySerial, "/dev/ttyS%d", port);
-	fd = open(ttySerial, O_RDWR|O_CLOEXEC);
+	fd = open(port.c_str(), O_RDWR | O_CLOEXEC | O_NOCTTY);
 	if (fd == -1)
 	{
 		int errnum = errno;
-		printf("Open Serial Port %s failed, %s(%d).\n", ttySerial, strerror(errnum), errnum);
+		printf("Open Serial Port %s failed, %s(%d).\n", port.c_str(), strerror(errnum), errnum);
 		return false;
 	}
+	termios options{};
+	tcgetattr(fd, &options);
+	tcflush(fd, TCIOFLUSH);
+	options.c_cflag = CLOCAL | CREAD;
+	options.c_iflag |= IXOFF;
+	options.c_lflag |= ICANON | ECHO | ECHOE | ISIG;
+	tcsetattr(fd, TCSANOW, &options);
 #endif
 	return true;
 }
@@ -103,7 +108,7 @@ void SerialPort::closePort()
 
 }
 
-int SerialPort::setBaudRate(SerialPort::BaudRate baudRate)
+int SerialPort::setBaudRate(SerialPort::BaudRate baudRate) const
 {
 #ifdef _WIN32
 	DCB dcb;
@@ -129,20 +134,21 @@ int SerialPort::setBaudRate(SerialPort::BaudRate baudRate)
 #endif
 #ifdef __linux__
 	termios options{};
-	options.c_cflag = CLOCAL|CREAD;
 	tcgetattr(fd, &options);
-	cfsetospeed(&options, baudRate);
-	cfsetispeed(&options, baudRate);
-	return tcsetattr(fd, TCSANOW, &options);
+	if (-1 == cfsetspeed(&options, baudRate))
+	{
+		int errnum = errno;
+		printf("Set baud rate failed, %s(%d).\n", strerror(errnum), errnum);
+		return -1;
+	}
+	else
+	{
+		return tcsetattr(fd, TCSANOW, &options);;
+	}
 #endif
 }
 
-SerialPort::BaudRate SerialPort::getBaudRate()
-{
-	return SerialPort::UnknownBaud;
-}
-
-int SerialPort::setDataBits(SerialPort::DataBits dataBits)
+int SerialPort::setDataBits(SerialPort::DataBits dataBits) const
 {
 #ifdef _WIN32
 	DCB dcb;
@@ -160,16 +166,31 @@ int SerialPort::setDataBits(SerialPort::DataBits dataBits)
 	}
 #endif
 #ifdef __linux__
-	return 0;
+	termios options{};
+	tcgetattr(fd, &options);
+	options.c_cflag &= ~CSIZE;
+	switch (dataBits)
+	{
+		case Data5:
+			options.c_cflag |= CS5;
+			break;
+		case Data6:
+			options.c_cflag |= CS6;
+			break;
+		case Data7:
+			options.c_cflag |= CS7;
+			break;
+		case Data8:
+		case UnknownDataBits:
+			options.c_cflag |= CS8;
+			break;
+	}
+
+	return tcsetattr(fd, TCSANOW, &options);
 #endif
 }
 
-SerialPort::DataBits SerialPort::getDataBits()
-{
-	return SerialPort::UnknownDataBits;
-}
-
-int SerialPort::setStopBits(SerialPort::StopBits stopBits)
+int SerialPort::setStopBits(SerialPort::StopBits stopBits) const
 {
 #ifdef _WIN32
 	DCB dcb;
@@ -187,16 +208,28 @@ int SerialPort::setStopBits(SerialPort::StopBits stopBits)
 	}
 #endif
 #ifdef __linux__
-	return 0;
+	termios options{};
+	tcgetattr(fd, &options);
+	options.c_cflag &= ~CSIZE;
+	switch (stopBits)
+	{
+		case OneStop:
+			options.c_cflag &= ~CSTOPB;
+			break;
+		case OneAndHalfStop:
+			break;
+		case TwoStop:
+			options.c_cflag |= CSTOPB;
+			break;
+		case UnknownStopBits:
+			break;
+	}
+
+	return tcsetattr(fd, TCSANOW, &options);
 #endif
 }
 
-SerialPort::StopBits SerialPort::getStopBits()
-{
-	return SerialPort::OneStop;
-}
-
-int SerialPort::setParity(SerialPort::Parity parity)
+int SerialPort::setParity(SerialPort::Parity parity) const
 {
 #ifdef _WIN32
 	DCB dcb;
@@ -214,16 +247,35 @@ int SerialPort::setParity(SerialPort::Parity parity)
 	}
 #endif
 #ifdef __linux__
-	return 0;
+	termios options{};
+	tcgetattr(fd, &options);
+	switch (parity)
+	{
+		case NoParity:
+			options.c_cflag &= ~PARENB;
+			break;
+		case EvenParity:
+			options.c_cflag |= PARENB;
+			options.c_cflag &= ~PARODD;
+			break;
+		case OddParity:
+			options.c_cflag |= PARENB;
+			options.c_cflag |= PARODD;
+			break;
+		case SpaceParity:
+			break;
+		case MarkParity:
+			options.c_cflag |= PARMRK;
+			break;
+		case UnknownParity:
+			break;
+	}
+
+	return tcsetattr(fd, TCSANOW, &options);
 #endif
 }
 
-SerialPort::Parity SerialPort::getParity()
-{
-	return SerialPort::OddParity;
-}
-
-int SerialPort::setFlowControl(SerialPort::FlowControl flowControl)
+int SerialPort::setFlowControl(SerialPort::FlowControl flowControl) const
 {
 #ifdef _WIN32
 #endif
@@ -232,12 +284,7 @@ int SerialPort::setFlowControl(SerialPort::FlowControl flowControl)
 	return 0;
 }
 
-SerialPort::FlowControl SerialPort::getFlowControl()
-{
-	return SerialPort::UnknownFlowControl;
-}
-
-unsigned long SerialPort::read(void *buffer, unsigned long size)
+unsigned long SerialPort::recv(void *buffer, unsigned long size) const
 {
 	if (fd == INVALID_FD)
 	{
@@ -264,7 +311,7 @@ unsigned long SerialPort::read(void *buffer, unsigned long size)
 #endif
 }
 
-unsigned long SerialPort::write(const char *buffer, unsigned long size)
+unsigned long SerialPort::send(const char *buffer, unsigned long size) const
 {
 	if (fd == INVALID_FD)
 	{
@@ -302,13 +349,23 @@ bool SerialPort::isOpen() const
 
 bool SerialPort::waitReadyRead()
 {
+#ifdef _WIN32
 	unsigned long dwEventMask;
 	if (TRUE == WaitCommEvent(fd, &dwEventMask, nullptr))
 	{
-		if ((dwEventMask&EV_RXCHAR) != 0)
+		if ((dwEventMask & EV_RXCHAR) != 0)
 		{
 			return true;
 		}
 	}
 	return false;
+#endif
+#ifdef __linux__
+	return false;
+#endif
+}
+
+SERIAL_PORT_FD SerialPort::getNativeHandle() const
+{
+	return fd;
 }

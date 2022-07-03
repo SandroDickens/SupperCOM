@@ -11,14 +11,19 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (WIN32)
+if (CMAKE_HOST_WIN32)
     set(CMAKE_PREFIX_PATH "D:/Qt/Qt6/msvc")
 endif ()
+if (CMAKE_HOST_UNIX)
+    set(CMAKE_PREFIX_PATH "/opt/qt-gcc")
+endif ()
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort LinguistTools Core5Compat)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort LinguistTools Core5Compat)
-
-set(TS_FILES SupperCOM_zh_CN.ts)
+find_package(Qt6 REQUIRED COMPONENTS Widgets SerialPort Core5Compat)
+if (Qt6_FOUND)
+    set(QT_VERSION_MAJOR 6)
+else ()
+    find_package(Qt5 REQUIRED COMPONENTS Widgets SerialPort LinguistTools Core5Compat)
+endif ()
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -40,8 +45,6 @@ if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     #    set_property(TARGET SupperCOM APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
     #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
     # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else ()
     if (ANDROID)
         add_library(SupperCOM SHARED ${PROJECT_SOURCES})

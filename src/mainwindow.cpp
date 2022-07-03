@@ -15,10 +15,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QTimer>
-#include <QDebug>
 #include <QTextCodec>
 
-#include <iostream>
 
 #ifdef _WIN32
 
@@ -28,6 +26,7 @@
 
 #include <unistd.h>
 #include <cerrno>
+#include <iostream>
 
 #else
 #error Unsupported operating system
@@ -56,12 +55,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	else
 	{
 		QStringList portNameList;
-		for (const QSerialPortInfo &info: serialPortList)
+		for (const QSerialPortInfo &info:serialPortList)
 		{
 			portNameList.append(info.portName());
 		}
 		std::sort(portNameList.begin(), portNameList.end(), compareQString);
-		for (const QString &portName: portNameList)
+		for (const QString &portName:portNameList)
 		{
 			ui->serialPortSel->addItem(portName);
 		}
@@ -69,21 +68,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 	/* set baud rate */
 	int baudRate[] = {9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600};
-	for (int rate: baudRate)
+	for (int rate:baudRate)
 	{
 		ui->baudRateSel->addItem(QString::number(rate));
 	}
 	ui->baudRateSel->setCurrentIndex(5);
 	/* set data bits */
 	int dataBits[] = {5, 6, 7, 8};
-	for (int bits: dataBits)
+	for (int bits:dataBits)
 	{
 		ui->dataBitSel->addItem(QString::number(bits));
 	}
 	ui->dataBitSel->setCurrentIndex(3);
 	/* set stop bits */
 	int stopBits[] = {1, 2};
-	for (int bits: stopBits)
+	for (int bits:stopBits)
 	{
 		ui->stopBitSel->addItem(QString::number(bits));
 	}
@@ -129,6 +128,7 @@ inline void MainWindow::resFree()
 {
 	if (recvThread != nullptr)
 	{
+		disconnect(this, &MainWindow::portClosed, recvThread, &RecvThread::onPortClosed);
 		disconnect(recvThread, &RecvThread::readyRead, this, &MainWindow::recvData);
 		recvThread->stop();
 		recvThread->quit();
@@ -158,7 +158,6 @@ inline void MainWindow::resFree()
 	}
 	if (serialPort != nullptr)
 	{
-		disconnect(this, &MainWindow::portClosed, recvThread, &RecvThread::onPortClosed);
 		if (serialPort->isOpen())
 		{
 			serialPort->closePort();
@@ -231,16 +230,16 @@ void MainWindow::openSerialPort()
 		serialPort = SerialPort::getSerialPort();
 		if (serialPort != nullptr)
 		{
-			int port = 0;
 #ifdef _WIN32
 			//COMxxx
-			std::string name(portName.toLatin1().constData());
-			sscanf_s(name.c_str(), "COM%d", &port);
+			std::string devName(portName.toLatin1().constData());
 #endif
 #ifdef __linux__
-			//ttySxx
+			std::string name(portName.toLocal8Bit().constData());
+			char devName[32];
+			sprintf(devName, "/dev/%s", name.c_str());
 #endif
-			if (serialPort->openSerialPort(port))
+			if (serialPort->openSerialPort(devName))
 			{
 				ui->openSerialPortBtn->setText(QString(tr("关闭串口")));
 				recvThread = new RecvThread(serialPort);
@@ -260,7 +259,7 @@ void MainWindow::openSerialPort()
 #else
 #error Unsupported operating system
 #endif
-						qDebug() << QString(tr("Wait for serial port to open ...\n")) << i << QString(tr("s\n"));
+						qDebug() << QString(tr("Wait for serial port to open ...")) << i << QString(tr("s\n"));
 					}
 				}
 				if (!serialPort->isOpen())
@@ -274,8 +273,46 @@ void MainWindow::openSerialPort()
 				else
 				{
 					int rate = baudRateStr.toInt();
-					serialPort->setBaudRate(SerialPort::BaudRate(rate));
-					serialPort->setDataBits(SerialPort::DataBits(dataBits.toInt()));
+					SerialPort::BaudRate baudRate = SerialPort::UnknownBaud;
+					switch (rate)
+					{
+						case 1200:
+							baudRate = SerialPort::Baud1200;
+							break;
+						case 2400:
+							baudRate = SerialPort::Baud2400;
+							break;
+						case 4800:
+							baudRate = SerialPort::Baud4800;
+							break;
+						case 9600:
+							baudRate = SerialPort::Baud9600;
+							break;
+						case 19200:
+							baudRate = SerialPort::Baud19200;
+							break;
+						case 38400:
+							baudRate = SerialPort::Baud38400;
+							break;
+						case 57600:
+							baudRate = SerialPort::Baud57600;
+							break;
+						case 115200:
+							baudRate = SerialPort::Baud115200;
+							break;
+						default:
+							break;
+					}
+					if (-1 == serialPort->setBaudRate(baudRate))
+					{
+						qDebug() << QString(tr("Set serial port baud rate failed!\n"));
+						return;
+					}
+					if (-1 == serialPort->setDataBits(SerialPort::DataBits(dataBits.toInt())))
+					{
+						qDebug() << QString(tr("Set serial port data-bits failed!\n"));
+						return;
+					}
 					SerialPort::StopBits stopBits;
 					if (stopBitsStr == "1")
 					{
@@ -293,7 +330,11 @@ void MainWindow::openSerialPort()
 					{
 						stopBits = SerialPort::StopBits::UnknownStopBits;
 					}
-					serialPort->setStopBits(SerialPort::StopBits(stopBits));
+					if (-1 == serialPort->setStopBits(SerialPort::StopBits(stopBits)))
+					{
+						qDebug() << QString(tr("Set serial port stop-bits failed!\n"));
+						return;
+					}
 
 					SerialPort::Parity parity;
 					switch (chkBits)
@@ -312,8 +353,16 @@ void MainWindow::openSerialPort()
 							break;
 					}
 
-					serialPort->setParity(parity);
-					serialPort->setFlowControl(SerialPort::FlowControl::NoFlowControl);
+					if (-1 == serialPort->setParity(parity))
+					{
+						qDebug() << QString(tr("Set serial port parity failed!\n"));
+						return;
+					}
+					if (-1 == serialPort->setFlowControl(SerialPort::FlowControl::NoFlowControl))
+					{
+						qDebug() << QString(tr("Set serial port flow control failed!\n"));
+						return;
+					}
 					recvThread->start();
 				}
 			}
@@ -345,17 +394,19 @@ void MainWindow::recvData(unsigned long event)
 	if (serialPort != nullptr)
 	{
 		char buffer[4096];
-		auto read_size = serialPort->read(buffer, sizeof(buffer));
+		auto read_size = serialPort->recv(buffer, sizeof(buffer));
 		if (read_size == 0)
 		{
 			return;
 		}
 		buffer[read_size] = '\0';
-		//std::cout << buffer << std::flush;
+#ifdef QT_DEBUG
+		std::cout << buffer << std::flush;
+#endif
 		QTextBrowser *textBrowser = ui->recvTextBrowser;
 		if (ui->hexDisplay->checkState() != Qt::Unchecked)
 		{
-			for (char i: buffer)
+			for (char i:buffer)
 			{
 				QString ch = QString::number(i, 10);
 				textBrowser->insertPlainText(ch.toUpper());
@@ -364,8 +415,13 @@ void MainWindow::recvData(unsigned long event)
 		}
 		else
 		{
+#ifdef _WIN32
 			QTextCodec *textCodec = QTextCodec::codecForName("UTF-8");
 			QString text = textCodec->toUnicode(buffer);
+#endif
+#ifdef __linux__
+			QString text = QString::fromUtf8(buffer, read_size);
+#endif
 			textBrowser->insertPlainText(text);
 			textBrowser->moveCursor(textBrowser->textCursor().End);
 		}
@@ -401,7 +457,7 @@ void MainWindow::sendData()
 		}
 		const char *buff = sendByteArray.constData();
 		unsigned long size = sendByteArray.size();
-		serialPort->write(buff, size);
+		serialPort->send(buff, size);
 	}
 }
 
@@ -449,7 +505,7 @@ void MainWindow::sendFile()
 	{
 		ui->sendFileBtn->setEnabled(false);
 		ui->sendBtn->setEnabled(false);
-		/* open file and create write thread */
+		/* open file and create send thread */
 		sendThread = new SendThread(serialPort);
 		connect(this, &MainWindow::startSendFile, sendThread, &SendThread::startSendFile);
 		connect(sendThread, &SendThread::sendFinished, this, &MainWindow::sendOver);
@@ -478,7 +534,7 @@ void MainWindow::sendOver(qint64 retVal)
 			break;
 		case SEND_FILE_ERROR:
 			msgBox.setWindowTitle(QString(tr("ERROR")));
-			msgBox.setText(QString(tr("File failed to write!")));
+			msgBox.setText(QString(tr("File failed to send!")));
 			break;
 		case SEND_FILE_SUCCESS:
 			msgBox.setWindowTitle(QString(tr("INFO")));

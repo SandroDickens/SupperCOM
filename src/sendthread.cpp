@@ -52,7 +52,7 @@ void SendThread::run()
 			qint64 readLen = file.read(sendBuf.get(), 4096);
 			if (readLen > 0)
 			{
-				wLen = serialPort->write(sendBuf.get(), readLen);
+				wLen = serialPort->send(sendBuf.get(), readLen);
 				if (wLen != -1)
 				{
 					sendCount += wLen;

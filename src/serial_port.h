@@ -1,6 +1,8 @@
 #ifndef _SERIAL_PORT_H_
 #define _SERIAL_PORT_H_
 
+#include <string>
+
 #ifdef _WIN32
 
 #include <Windows.h>
@@ -9,13 +11,22 @@
 typedef HANDLE SERIAL_PORT_FD;
 #endif
 #ifdef __linux__
+
+#include <termios.h>
+
 #define INVALID_FD    (-1)
-typedef int           SERIAL_PORT_FD;
+typedef int SERIAL_PORT_FD;
 #endif
 
 class SerialPort
 {
 public:
+	enum DataBits
+	{
+		Data5 = 5, Data6 = 6, Data7 = 7, Data8 = 8, UnknownDataBits = -1
+	};
+
+#ifdef _WIN32
 	enum BaudRate
 	{
 		Baud1200 = 1200,
@@ -29,12 +40,6 @@ public:
 		UnknownBaud = -1
 	};
 
-	enum DataBits
-	{
-		Data5 = 5, Data6 = 6, Data7 = 7, Data8 = 8, UnknownDataBits = -1
-	};
-
-#ifdef _WIN32
 	enum StopBits
 	{
 		OneStop = ONESTOPBIT, OneAndHalfStop = ONE5STOPBITS, TwoStop = TWOSTOPBITS, UnknownStopBits = -1
@@ -55,6 +60,19 @@ public:
 		NoFlowControl, HardwareControl, SoftwareControl, UnknownFlowControl = -1
 	};
 #else
+	enum BaudRate
+	{
+		Baud1200 = B1200,
+		Baud2400 = B2400,
+		Baud4800 = B4800,
+		Baud9600 = B9600,
+		Baud19200 = B19200,
+		Baud38400 = B38400,
+		Baud57600 = B57600,
+		Baud115200 = B115200,
+		UnknownBaud = -1
+	};
+
 	enum StopBits
 	{
 		OneStop = 1, OneAndHalfStop = 3, TwoStop = 2, UnknownStopBits = -1
@@ -77,43 +95,36 @@ public:
 	static SerialPort *getSerialPort();
 
 	/* Open SerialPort */
-	bool openSerialPort(int port);
+	bool openSerialPort(const std::string &port);
 
 	/* Close SerialPort */
 	void closePort();
 
-	int setBaudRate(SerialPort::BaudRate baudRate);
+	[[nodiscard]] int setBaudRate(SerialPort::BaudRate baudRate) const;
 
-	SerialPort::BaudRate getBaudRate();
+	[[nodiscard]] int setDataBits(SerialPort::DataBits dataBits) const;
 
-	int setDataBits(SerialPort::DataBits dataBits);
+	[[nodiscard]] int setStopBits(SerialPort::StopBits stopBits) const;
 
-	SerialPort::DataBits getDataBits();
+	[[nodiscard]] int setParity(SerialPort::Parity parity) const;
 
-	int setStopBits(SerialPort::StopBits stopBits);
-
-	SerialPort::StopBits getStopBits();
-
-	int setParity(SerialPort::Parity parity);
-
-	SerialPort::Parity getParity();
-
-	int setFlowControl(SerialPort::FlowControl flowControl);
-
-	SerialPort::FlowControl getFlowControl();
+	[[nodiscard]] int setFlowControl(SerialPort::FlowControl flowControl) const;
 
 	/* Read data from SerialPort */
-	unsigned long read(void *buffer, unsigned long size);
+	unsigned long recv(void *buffer, unsigned long size) const;
 
 	/* Send data through SerialPort */
-	unsigned long write(const char *buffer, unsigned long size);
+	unsigned long send(const char *buffer, unsigned long size) const;
 
 	[[nodiscard]] bool isOpen() const;
 
 	bool waitReadyRead();
 
+	[[nodiscard]] SERIAL_PORT_FD getNativeHandle() const;
+
 private:
 	SerialPort();
+
 	SERIAL_PORT_FD fd;
 	static SerialPort *serialPort;
 };
