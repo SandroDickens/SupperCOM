@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>876</width>
-    <height>846</height>
+    <width>823</width>
+    <height>665</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -27,15 +27,15 @@
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>19</x>
-      <y>18</y>
-      <width>838</width>
-      <height>803</height>
+      <x>10</x>
+      <y>10</y>
+      <width>798</width>
+      <height>629</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QTextBrowser" name="recvTextBrowser">
          <property name="sizePolicy">
@@ -55,6 +55,9 @@
            <family>Arial</family>
            <pointsize>10</pointsize>
           </font>
+         </property>
+         <property name="cursor" stdset="0">
+          <cursorShape>IBeamCursor</cursorShape>
          </property>
         </widget>
        </item>
@@ -78,6 +81,9 @@
            <pointsize>10</pointsize>
           </font>
          </property>
+         <property name="cursor" stdset="0">
+          <cursorShape>IBeamCursor</cursorShape>
+         </property>
         </widget>
        </item>
        <item>
@@ -99,9 +105,9 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QFormLayout" name="formLayout">
+        <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label_1">
            <property name="font">
@@ -114,7 +120,7 @@
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>SerialPort：</string>
+            <string>Serial Port：</string>
            </property>
            <property name="textFormat">
             <enum>Qt::PlainText</enum>
@@ -239,338 +245,23 @@
        </item>
        <item>
         <spacer name="verticalSpacer">
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>53</height>
+           <height>40</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QPushButton" name="openSerialPortBtn">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Open Port</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="setFontBtn">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Font</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="setBGColorBtn">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>BackColor</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QPushButton" name="setFontColorBtn">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Font Color</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>52</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QCheckBox" name="hexDisplay">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Display Hex</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="timeStamp">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>timestamp</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>53</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QFormLayout" name="formLayout_2">
-         <item row="0" column="0">
-          <widget class="QPushButton" name="cleanDisplayArea">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>RX Clear</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="cleanSendArea">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>TX Clear</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="sendBtn">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Send</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QPushButton" name="stopSendBtn">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Stop Send</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_4">
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>52</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QFormLayout" name="formLayout_4">
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="hexSend">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Hex Send</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QCheckBox" name="sendNewLine">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Send NewLine</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <layout class="QFormLayout" name="formLayout_3">
-           <item row="0" column="0">
-            <widget class="QLineEdit" name="sendInterval">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="setBGColorBtn">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -580,13 +271,13 @@
              <property name="minimumSize">
               <size>
                <width>70</width>
-               <height>20</height>
+               <height>30</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>60</width>
-               <height>20</height>
+               <width>70</width>
+               <height>30</height>
               </size>
              </property>
              <property name="font">
@@ -595,85 +286,553 @@
                <pointsize>10</pointsize>
               </font>
              </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>BackColor</string>
+             </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label">
+           <item>
+            <widget class="QPushButton" name="setFontBtn">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>30</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Arial</family>
                <pointsize>10</pointsize>
               </font>
              </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
              <property name="text">
-              <string>s</string>
+              <string>Font</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="setFontColorBtn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>Font Color</string>
              </property>
             </widget>
            </item>
           </layout>
          </item>
-         <item row="1" column="1">
-          <widget class="QCheckBox" name="schedSend">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>Send Cyclic</string>
-           </property>
-          </widget>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QCheckBox" name="hexDisplay">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>Display Hex</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="timeStamp">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>timestamp</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_5">
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
+        <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>53</height>
+           <height>18</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <widget class="QPushButton" name="openSerialPortBtn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="locale">
+          <locale language="Chinese" country="China"/>
+         </property>
+         <property name="text">
+          <string>Open Port</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>13</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QPushButton" name="cleanDisplayArea">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>RX Clear</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cleanSendArea">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>TX Clear</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QPushButton" name="sendBtn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>Send</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="stopSendBtn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>Stop Send</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QCheckBox" name="hexSend">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>Hex Send</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="sendNewLine">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>Send NewLine</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QCheckBox" name="schedSend">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="locale">
+              <locale language="Chinese" country="China"/>
+             </property>
+             <property name="text">
+              <string>Send Cyclic</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="sendInterval">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QToolButton" name="openFileBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>90</width>
              <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>100</width>
+             <width>90</width>
              <height>30</height>
             </size>
            </property>
@@ -701,13 +860,13 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>90</width>
              <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>100</width>
+             <width>90</width>
              <height>30</height>
             </size>
            </property>
@@ -746,7 +905,6 @@
   <tabstop>setFontBtn</tabstop>
   <tabstop>setBGColorBtn</tabstop>
   <tabstop>setFontColorBtn</tabstop>
-  <tabstop>hexDisplay</tabstop>
   <tabstop>cleanDisplayArea</tabstop>
   <tabstop>cleanSendArea</tabstop>
   <tabstop>sendBtn</tabstop>
