@@ -1,9 +1,13 @@
 #include "recvthread.h"
+#include "serial_port.h"
 
-#include <QSerialPort>
-#include <QSemaphore>
+#ifdef __linux__
 
-RecvThread::RecvThread(QSerialPort *port)
+#include <sys/epoll.h>
+
+#endif
+
+RecvThread::RecvThread(SerialPort *port)
 {
 	Q_ASSERT(port != nullptr);
 	serialPort = port;
@@ -17,36 +21,59 @@ RecvThread::~RecvThread()
 	this->wait();
 }
 
-void RecvThread::notifyDataIn()
-{
-	dataInSem.release();
-}
 
 void RecvThread::run()
 {
-	connect(serialPort, &QSerialPort::readyRead, this, &RecvThread::notifyDataIn);
-	while (true)
+#ifdef _WIN32
+	while (!exited)
 	{
-		dataInSem.acquire();
-		QByteArray recvArray = serialPort->readAll();
-		if (!recvArray.isEmpty())
+		if (serialPort->waitReadyRead())
 		{
-			emit dataIn(recvArray);
+			emit readyRead(0);
 		}
 		if (exited)
 		{
 			break;
 		}
 	}
+#endif
+#ifdef __linux__
+	int epl_fd = epoll_create(1);
+	if (epl_fd < 0)
+	{
+		perror("epoll create failed");
+		exit(errno);
+	}
+
+	epoll_event event{};
+	event.events = EPOLLIN;
+	event.data.ptr = nullptr;
+
+	epoll_ctl(epl_fd, EPOLL_CTL_ADD, serialPort->getNativeHandle(), &event);
+
+	epoll_event events{};
+	int timeout = 500;
+	while (!exited)
+	{
+		int wait_ret = epoll_wait(epl_fd, &events, 1, timeout);
+		if ((wait_ret > 0) && (events.events & EPOLLIN))
+		{
+			emit readyRead(0);
+		}
+		else if (wait_ret == -1)
+		{
+			break;
+		}
+	}
+#endif
 }
 
 void RecvThread::stop()
 {
-	disconnect(serialPort, &QSerialPort::readyRead, this, &RecvThread::notifyDataIn);
 	exited = true;
 }
 
 void RecvThread::onPortClosed()
 {
-	disconnect(serialPort, &QSerialPort::readyRead, this, &RecvThread::notifyDataIn);
+	exited = true;
 }

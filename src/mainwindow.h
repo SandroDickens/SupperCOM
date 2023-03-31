@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QSerialPort>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -14,6 +13,9 @@ QT_END_NAMESPACE
 class RecvThread;
 
 class SendThread;
+
+class SerialPort;
+
 
 class MainWindow : public QMainWindow
 {
@@ -37,9 +39,7 @@ private slots:
 
 	void openSerialPort();
 
-	void recvData(const QByteArray &msgArray);
-
-	void portErrorProc(QSerialPort::SerialPortError error);
+	void recvData(unsigned long event);
 
 	void sendData();
 
@@ -67,7 +67,7 @@ signals:
 	void portClosed();
 
 private:
-	QSerialPort *serialPort;
+	SerialPort *serialPort;
 	RecvThread *recvThread;
 	SendThread *sendThread;
 	QTimer *trigTimer;
