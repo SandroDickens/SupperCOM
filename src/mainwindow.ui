@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>790</width>
-    <height>665</height>
+    <width>876</width>
+    <height>846</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,20 +24,26 @@
     <normaloff>../rc/logo.ico</normaloff>../rc/logo.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>767</width>
-      <height>644</height>
+      <x>19</x>
+      <y>18</y>
+      <width>838</width>
+      <height>803</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QTextBrowser" name="recvTextBrowser">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>550</width>
@@ -46,13 +52,20 @@
          </property>
          <property name="font">
           <font>
-           <family>DejaVu Sans Mono</family>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
           </font>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QTextEdit" name="sendTextEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>550</width>
@@ -61,16 +74,24 @@
          </property>
          <property name="font">
           <font>
-           <family>DejaVu Sans Mono</family>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
           </font>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="sendFilePath">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
-           <family>DejaVu Sans Mono</family>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
           </font>
          </property>
         </widget>
@@ -78,22 +99,22 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QGridLayout" name="gridLayout_4">
+        <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label_1">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>串  口：</string>
+            <string>SerialPort：</string>
            </property>
            <property name="textFormat">
             <enum>Qt::PlainText</enum>
@@ -104,7 +125,8 @@
           <widget class="QComboBox" name="serialPortSel">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
           </widget>
@@ -113,15 +135,15 @@
           <widget class="QLabel" name="label_2">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>波特率：</string>
+            <string>Baud Rate：</string>
            </property>
           </widget>
          </item>
@@ -129,7 +151,8 @@
           <widget class="QComboBox" name="baudRateSel">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
           </widget>
@@ -138,15 +161,15 @@
           <widget class="QLabel" name="label_3">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>数据位：</string>
+            <string>Data Bits：</string>
            </property>
           </widget>
          </item>
@@ -154,7 +177,8 @@
           <widget class="QComboBox" name="dataBitSel">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
           </widget>
@@ -163,15 +187,15 @@
           <widget class="QLabel" name="label_4">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>停止位：</string>
+            <string>Stop Bits：</string>
            </property>
           </widget>
          </item>
@@ -179,7 +203,8 @@
           <widget class="QComboBox" name="stopBitSel">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
           </widget>
@@ -188,15 +213,15 @@
           <widget class="QLabel" name="label_5">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>校验位：</string>
+            <string>Check Bits：</string>
            </property>
           </widget>
          </item>
@@ -204,7 +229,8 @@
           <widget class="QComboBox" name="checkBitSel">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
           </widget>
@@ -213,13 +239,19 @@
        </item>
        <item>
         <spacer name="verticalSpacer">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>18</height>
+           <height>53</height>
           </size>
          </property>
         </spacer>
@@ -230,21 +262,21 @@
           <widget class="QPushButton" name="openSerialPortBtn">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>新宋体</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>打开串口</string>
+            <string>Open Port</string>
            </property>
           </widget>
          </item>
@@ -252,21 +284,21 @@
           <widget class="QPushButton" name="setFontBtn">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>字体</string>
+            <string>Font</string>
            </property>
           </widget>
          </item>
@@ -274,21 +306,21 @@
           <widget class="QPushButton" name="setBGColorBtn">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>背景颜色</string>
+            <string>BackColor</string>
            </property>
           </widget>
          </item>
@@ -296,15 +328,21 @@
           <widget class="QPushButton" name="setFontColorBtn">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>字体颜色</string>
+            <string>Font Color</string>
            </property>
           </widget>
          </item>
@@ -312,48 +350,54 @@
        </item>
        <item>
         <spacer name="verticalSpacer_3">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>13</height>
+           <height>52</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="1">
-          <widget class="QCheckBox" name="timeStamp">
-           <property name="font">
-            <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
-            </font>
-           </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
-           <property name="text">
-            <string>时间戳</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
           <widget class="QCheckBox" name="hexDisplay">
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>16进制显示</string>
+            <string>Display Hex</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="timeStamp">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="locale">
+            <locale language="Chinese" country="China"/>
+           </property>
+           <property name="text">
+            <string>timestamp</string>
            </property>
           </widget>
          </item>
@@ -361,37 +405,44 @@
        </item>
        <item>
         <spacer name="verticalSpacer_2">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>17</height>
+           <height>53</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QFormLayout" name="formLayout_2">
          <item row="0" column="0">
           <widget class="QPushButton" name="cleanDisplayArea">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>清空接收</string>
+            <string>RX Clear</string>
            </property>
           </widget>
          </item>
@@ -399,20 +450,21 @@
           <widget class="QPushButton" name="cleanSendArea">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>清空发送</string>
+            <string>TX Clear</string>
            </property>
           </widget>
          </item>
@@ -420,20 +472,21 @@
           <widget class="QPushButton" name="sendBtn">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>发送</string>
+            <string>Send</string>
            </property>
           </widget>
          </item>
@@ -441,20 +494,21 @@
           <widget class="QPushButton" name="stopSendBtn">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>停止发送</string>
+            <string>Stop Send</string>
            </property>
           </widget>
          </item>
@@ -462,13 +516,147 @@
        </item>
        <item>
         <spacer name="verticalSpacer_4">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>13</height>
+           <height>52</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QFormLayout" name="formLayout_4">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="hexSend">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="locale">
+            <locale language="Chinese" country="China"/>
+           </property>
+           <property name="text">
+            <string>Hex Send</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="sendNewLine">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="locale">
+            <locale language="Chinese" country="China"/>
+           </property>
+           <property name="text">
+            <string>Send NewLine</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <layout class="QFormLayout" name="formLayout_3">
+           <item row="0" column="0">
+            <widget class="QLineEdit" name="sendInterval">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>s</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="schedSend">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="locale">
+            <locale language="Chinese" country="China"/>
+           </property>
+           <property name="text">
+            <string>Send Cyclic</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>53</height>
           </size>
          </property>
         </spacer>
@@ -476,174 +664,67 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QCheckBox" name="hexSend">
-             <property name="font">
-              <font>
-               <family>DejaVu Sans Mono</family>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="locale">
-              <locale language="Chinese" country="China"/>
-             </property>
-             <property name="text">
-              <string>16进制发送</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <widget class="QLineEdit" name="sendInterval">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>70</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>60</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <family>DejaVu Sans Mono</family>
-                 <pointsize>9</pointsize>
-                </font>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="font">
-                <font>
-                 <family>DejaVu Sans Mono</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>s</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QCheckBox" name="sendNewLine">
-             <property name="font">
-              <font>
-               <family>DejaVu Sans Mono</family>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="locale">
-              <locale language="Chinese" country="China"/>
-             </property>
-             <property name="text">
-              <string>发送新行</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="schedSend">
-             <property name="font">
-              <font>
-               <family>DejaVu Sans Mono</family>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="locale">
-              <locale language="Chinese" country="China"/>
-             </property>
-             <property name="text">
-              <string>定时发送</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>13</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
           <widget class="QToolButton" name="openFileBtn">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
-             <pointsize>9</pointsize>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>打开文件</string>
+            <string>Open File</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item>
           <widget class="QPushButton" name="sendFileBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>30</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <family>DejaVu Sans Mono</family>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
             </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
            </property>
            <property name="locale">
             <locale language="Chinese" country="China"/>
            </property>
            <property name="text">
-            <string>发送文件</string>
+            <string>Send File</string>
            </property>
           </widget>
          </item>

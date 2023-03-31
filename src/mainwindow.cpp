@@ -16,7 +16,7 @@
 #include <QFileDialog>
 #include <QTimer>
 #include <QTextCodec>
-
+#include <QDebug>
 
 #ifdef _WIN32
 
@@ -385,7 +385,7 @@ void MainWindow::openSerialPort()
 	}
 }
 
-void MainWindow::recvData(unsigned long event)
+void MainWindow::recvData(unsigned long)
 {
 	if (serialPort != nullptr)
 	{

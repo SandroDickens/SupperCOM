@@ -37,6 +37,7 @@ Thumbs.db
 
 # CMake
 cmake-build-*
+build-*
 /CMakeLists.txt.user
 
 # qtcreator generated files

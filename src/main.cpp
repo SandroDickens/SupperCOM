@@ -4,14 +4,22 @@
 #include <QLocale>
 #include <QStyleFactory>
 #include <QTranslator>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
-	//qDebug() << QStyleFactory::keys();
-	/* Available styles: "windowsvista", "Windows", "Fusion" */
+#ifdef _DEBUG
+	QStringList styles = QStyleFactory::keys();
+	for (const QString &style: styles)
+	{
+		std::cout << style.toStdString() << std::endl;
+	}
+#endif
+	/* Available styles: "Windows", "Fusion" */
 	QApplication::setStyle(QStyleFactory::create("Fusion"));
-	//QApplication::setWindowIcon(QIcon("logo.ico"));
-	QApplication a(argc, argv);
+	QIcon logoIcon = QIcon(":/res/logo.ico");
+	QApplication::setWindowIcon(logoIcon);
+	QApplication app(argc, argv);
 
 	QTranslator translator;
 	const QStringList uiLanguages = QLocale::system().uiLanguages();

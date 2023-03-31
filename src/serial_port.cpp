@@ -55,11 +55,15 @@ bool SerialPort::openSerialPort(const std::string &port)
 		return true;
 	}
 #ifdef _WIN32
+#ifdef UNICODE
 	int count = MultiByteToWideChar(CP_UTF8, 0, port.c_str(), (int)port.length(), nullptr, 0);
 	std::wstring portName(count, 0);
 	MultiByteToWideChar(CP_UTF8, 0, port.c_str(), (int)port.length(), &portName[0], count);
-	fd = CreateFile(portName.c_str(), GENERIC_READ|GENERIC_WRITE, 0, nullptr, OPEN_EXISTING,
-	                FILE_ATTRIBUTE_NORMAL, nullptr);
+#else
+	const std::string &portName(port);
+#endif
+	fd = CreateFile(portName.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+	                nullptr);
 	if (fd == INVALID_HANDLE_VALUE)
 	{
 		printf("CreateFile failed with error %lu.\n", GetLastError());
@@ -73,7 +77,7 @@ bool SerialPort::openSerialPort(const std::string &port)
 	CommTimeOuts.WriteTotalTimeoutConstant = MAXDWORD;
 	SetCommTimeouts(fd, &CommTimeOuts);
 
-	if (TRUE != SetCommMask(fd, EV_RXCHAR|EV_CTS|EV_DSR))
+	if (TRUE != SetCommMask(fd, EV_RXCHAR | EV_CTS | EV_DSR))
 	{
 		printf("SetCommMask failed with error %lu.\n", GetLastError());
 		return false;
@@ -341,7 +345,7 @@ bool SerialPort::waitReadyRead()
 	unsigned long dwEventMask;
 	if (TRUE == WaitCommEvent(fd, &dwEventMask, nullptr))
 	{
-		if ((dwEventMask&EV_RXCHAR) != 0)
+		if ((dwEventMask & EV_RXCHAR) != 0)
 		{
 			return true;
 		}
