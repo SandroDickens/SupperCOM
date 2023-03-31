@@ -31,6 +31,7 @@ ui_*.h
 qrc_*.cpp
 Thumbs.db
 *.res
+*.ts
 /.qmake.cache
 /.qmake.stash
 

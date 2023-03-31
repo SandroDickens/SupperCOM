@@ -225,7 +225,7 @@ void MainWindow::openSerialPort()
 			serialPort->closePort();
 		}
 		resFree();
-		ui->openSerialPortBtn->setText(QString(tr("打开串口")));
+		ui->openSerialPortBtn->setText(QString(tr("Open Port")));
 	}
 	else
 	{
@@ -244,7 +244,7 @@ void MainWindow::openSerialPort()
 #endif
 			if (serialPort->openSerialPort(devName))
 			{
-				ui->openSerialPortBtn->setText(QString(tr("关闭串口")));
+				ui->openSerialPortBtn->setText(QString(tr("Close Port")));
 				recvThread = new RecvThread(serialPort);
 				connect(recvThread, &RecvThread::readyRead, this, &MainWindow::recvData, Qt::BlockingQueuedConnection);
 				for (int i = 0; i < 3; ++i)
@@ -269,7 +269,7 @@ void MainWindow::openSerialPort()
 				{
 					QMessageBox msgBox;
 					msgBox.setWindowTitle(QString(tr("ERROR")));
-					msgBox.setText(QString(tr("failed to open serialport!")) + portName);
+					msgBox.setText(QString(tr("failed to open serial port!")) + portName);
 					msgBox.setStandardButtons(QMessageBox::Ok);
 					ui->openSerialPortBtn->click();
 				}
