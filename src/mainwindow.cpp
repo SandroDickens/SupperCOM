@@ -52,16 +52,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	if (serialPortList.empty())
 	{
 		ui->serialPortSel->addItem(QString(tr("N/A")));
-	}
-	else
+	} else
 	{
 		QStringList portNameList;
-		for (const QSerialPortInfo &info:serialPortList)
+		for (const QSerialPortInfo &info: serialPortList)
 		{
 			portNameList.append(info.portName());
 		}
 		std::sort(portNameList.begin(), portNameList.end(), compareQString);
-		for (const QString &portName:portNameList)
+		for (const QString &portName: portNameList)
 		{
 			ui->serialPortSel->addItem(portName);
 		}
@@ -69,21 +68,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 	/* set baud rate */
 	int baudRate[] = {9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600};
-	for (int rate:baudRate)
+	for (int rate: baudRate)
 	{
 		ui->baudRateSel->addItem(QString::number(rate));
 	}
 	ui->baudRateSel->setCurrentIndex(5);
 	/* set data bits */
 	int dataBits[] = {5, 6, 7, 8};
-	for (int bits:dataBits)
+	for (int bits: dataBits)
 	{
 		ui->dataBitSel->addItem(QString::number(bits));
 	}
 	ui->dataBitSel->setCurrentIndex(3);
 	/* set stop bits */
 	int stopBits[] = {1, 2};
-	for (int bits:stopBits)
+	for (int bits: stopBits)
 	{
 		ui->stopBitSel->addItem(QString::number(bits));
 	}
@@ -165,8 +164,7 @@ inline void MainWindow::resFree()
 		{
 			serialPort->closePort();
 		}
-		delete serialPort;
-		serialPort = nullptr;
+		serialPort.reset();
 	}
 }
 
@@ -226,8 +224,7 @@ void MainWindow::openSerialPort()
 		}
 		resFree();
 		ui->openSerialPortBtn->setText(QString(tr("Open Port")));
-	}
-	else
+	} else
 	{
 		/* turn on serialport */
 		serialPort = SerialPort::getSerialPort();
@@ -252,8 +249,7 @@ void MainWindow::openSerialPort()
 					if (serialPort->isOpen())
 					{
 						break;
-					}
-					else
+					} else
 					{
 #ifdef _WIN32
 						Sleep(1000);
@@ -272,8 +268,7 @@ void MainWindow::openSerialPort()
 					msgBox.setText(QString(tr("failed to open serial port!")) + portName);
 					msgBox.setStandardButtons(QMessageBox::Ok);
 					ui->openSerialPortBtn->click();
-				}
-				else
+				} else
 				{
 					int rate = baudRateStr.toInt();
 					SerialPort::BaudRate baudRate = SerialPort::UnknownBaud;
@@ -320,16 +315,13 @@ void MainWindow::openSerialPort()
 					if (stopBitsStr == "1")
 					{
 						stopBits = SerialPort::StopBits::OneStop;
-					}
-					else if (stopBitsStr == "1.5")
+					} else if (stopBitsStr == "1.5")
 					{
 						stopBits = SerialPort::StopBits::OneAndHalfStop;
-					}
-					else if (stopBitsStr == "2")
+					} else if (stopBitsStr == "2")
 					{
 						stopBits = SerialPort::StopBits::TwoStop;
-					}
-					else
+					} else
 					{
 						stopBits = SerialPort::StopBits::UnknownStopBits;
 					}
@@ -363,8 +355,7 @@ void MainWindow::openSerialPort()
 					}
 					recvThread->start();
 				}
-			}
-			else
+			} else
 			{
 				qDebug() << QString(tr("can NOT open serialport ")) << portName << QString(tr("\n"));
 				QMessageBox msgBox;
@@ -379,8 +370,7 @@ void MainWindow::openSerialPort()
 				msgBox.setStandardButtons(QMessageBox::Ok);
 				msgBox.exec();
 			}
-		}
-		else
+		} else
 		{
 			qDebug() << QString(tr("can NOT create serialport.\n"));
 		}
@@ -404,14 +394,13 @@ void MainWindow::recvData(unsigned long)
 		QTextBrowser *textBrowser = ui->recvTextBrowser;
 		if (ui->hexDisplay->checkState() != Qt::Unchecked)
 		{
-			for (char i:buffer)
+			for (char i: buffer)
 			{
 				QString ch = QString::number(i, 10);
 				textBrowser->insertPlainText(ch.toUpper());
 				textBrowser->moveCursor(textBrowser->textCursor().End);
 			}
-		}
-		else
+		} else
 		{
 #ifdef _WIN32
 			QTextCodec *textCodec = QTextCodec::codecForName("UTF-8");
@@ -437,8 +426,7 @@ void MainWindow::sendData()
 		if (Qt::Unchecked != ui->hexSend->checkState())
 		{
 			sendByteArray = QByteArray::fromHex(textCodec->fromUnicode(sendMsg));
-		}
-		else
+		} else
 		{
 			sendByteArray = textCodec->fromUnicode(sendMsg);
 		}
@@ -508,8 +496,7 @@ void MainWindow::sendFile()
 		connect(this, &MainWindow::startSendFile, sendThread, &SendThread::startSendFile);
 		connect(sendThread, &SendThread::sendFinished, this, &MainWindow::sendOver);
 		emit startSendFile(fileName);
-	}
-	else
+	} else
 	{
 		QMessageBox msgBox;
 		msgBox.setWindowTitle(QString(tr("ERROR")));
@@ -584,8 +571,7 @@ void MainWindow::timerChanged(int state)
 	if (timerInterval.isEmpty())
 	{
 		intervalCheck = false;
-	}
-	else
+	} else
 	{
 		bool ok;
 		inter = timerInterval.toInt(&ok, 10);
@@ -614,8 +600,7 @@ void MainWindow::timerChanged(int state)
 				msgBox.exec();
 				ui->schedSend->setCheckState(Qt::Unchecked);
 				timerEdit->setFocus();
-			}
-			else if (serialPort == nullptr)
+			} else if (serialPort == nullptr)
 			{
 				QMessageBox msgBox;
 				msgBox.setWindowTitle(QString(tr("ERROR")));
@@ -623,8 +608,7 @@ void MainWindow::timerChanged(int state)
 				msgBox.setStandardButtons(QMessageBox::Ok);
 				msgBox.exec();
 				ui->schedSend->setCheckState(Qt::Unchecked);
-			}
-			else if (sendThread != nullptr)
+			} else if (sendThread != nullptr)
 			{
 				if (sendThread->isRunning())
 				{
@@ -635,8 +619,7 @@ void MainWindow::timerChanged(int state)
 					msgBox.exec();
 					ui->schedSend->setCheckState(Qt::Unchecked);
 				}
-			}
-			else
+			} else
 			{
 				if (trigTimer != nullptr)
 				{

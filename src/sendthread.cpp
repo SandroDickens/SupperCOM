@@ -11,7 +11,7 @@
 
 static const int MAX_WRITE_LEN = 4096;
 
-SendThread::SendThread(SerialPort *port)
+SendThread::SendThread(const std::shared_ptr<SerialPort>& port)
 {
 	Q_ASSERT(port != nullptr);
 	serialPort = port;

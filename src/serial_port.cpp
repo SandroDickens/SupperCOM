@@ -14,16 +14,16 @@
 
 std::mutex singletonMutex;
 
-SerialPort *SerialPort::serialPort = nullptr;
+std::shared_ptr<SerialPort> SerialPort::serialPort = nullptr;
 
-SerialPort *SerialPort::getSerialPort()
+std::shared_ptr<SerialPort>SerialPort::getSerialPort()
 {
 	if (serialPort == nullptr)
 	{
 		singletonMutex.lock();
 		if (serialPort == nullptr)
 		{
-			serialPort = new SerialPort();
+			serialPort = std::shared_ptr<SerialPort>(new SerialPort());
 		}
 		singletonMutex.unlock();
 	}
@@ -148,7 +148,7 @@ int SerialPort::setBaudRate(SerialPort::BaudRate baudRate) const
 	}
 	else
 	{
-		return tcsetattr(fd, TCSANOW, &options);;
+		return tcsetattr(fd, TCSANOW, &options);
 	}
 #endif
 }

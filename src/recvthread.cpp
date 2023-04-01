@@ -7,7 +7,7 @@
 
 #endif
 
-RecvThread::RecvThread(SerialPort *port)
+RecvThread::RecvThread(const std::shared_ptr<SerialPort>& port)
 {
 	Q_ASSERT(port != nullptr);
 	serialPort = port;

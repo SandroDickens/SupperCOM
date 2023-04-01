@@ -13,7 +13,7 @@ class SendThread : public QThread
 {
 Q_OBJECT
 public:
-	explicit SendThread(SerialPort *port);
+	explicit SendThread(const std::shared_ptr<SerialPort>& port);
 
 	~SendThread() override;
 
@@ -22,7 +22,7 @@ public:
 	void stop();
 
 private:
-	SerialPort *serialPort;
+	std::shared_ptr<SerialPort> serialPort;
 	QString sendFileName;
 	bool exited;
 public slots:

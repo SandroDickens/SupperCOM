@@ -10,7 +10,7 @@ class RecvThread : public QThread
 {
 Q_OBJECT
 public:
-	explicit RecvThread(SerialPort *port);
+	explicit RecvThread(const std::shared_ptr<SerialPort>& port);
 
 	~RecvThread() override;
 
@@ -19,7 +19,7 @@ public:
 	void stop();
 
 private:
-	SerialPort *serialPort;
+	std::shared_ptr<SerialPort> serialPort;
 	bool exited;
 public slots:
 

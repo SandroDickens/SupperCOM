@@ -67,7 +67,7 @@ signals:
 	void portClosed();
 
 private:
-	SerialPort *serialPort;
+	std::shared_ptr<SerialPort> serialPort;
 	RecvThread *recvThread;
 	SendThread *sendThread;
 	QTimer *trigTimer;

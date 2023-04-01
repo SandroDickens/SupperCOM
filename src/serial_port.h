@@ -2,6 +2,7 @@
 #define _SERIAL_PORT_H_
 
 #include <string>
+#include <memory>
 
 #ifdef _WIN32
 
@@ -92,7 +93,7 @@ public:
 public:
 	virtual ~SerialPort();
 
-	static SerialPort *getSerialPort();
+	static std::shared_ptr<SerialPort> getSerialPort();
 
 	/* Open SerialPort */
 	bool openSerialPort(const std::string &port);
@@ -124,7 +125,7 @@ private:
 	SerialPort();
 
 	SERIAL_PORT_FD fd;
-	static SerialPort *serialPort;
+	static std::shared_ptr<SerialPort> serialPort;
 };
 
 #endif
